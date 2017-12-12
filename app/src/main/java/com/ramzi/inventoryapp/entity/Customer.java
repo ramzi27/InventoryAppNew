@@ -1,0 +1,66 @@
+package com.ramzi.inventoryapp.entity;
+
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+import com.nicolkill.superrecyclerview.annotations.BindField;
+import com.nicolkill.superrecyclerview.annotations.LayoutResource;
+import com.ramzi.inventoryapp.R;
+
+/**
+ * Created by Ramzi on 24-Nov-17.
+ */
+
+@Entity(tableName = "customer")
+@LayoutResource(R.layout.customer_frame)
+public class Customer {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private int id;
+    private int voidInd;
+    private String name, address, phone;
+
+    public int getVoidInd() {
+        return voidInd;
+    }
+
+    public void setVoidInd(int voidInd) {
+        this.voidInd = voidInd;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @BindField(id = R.id.cName)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @BindField(id = R.id.cAddress)
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @BindField(id = R.id.cPhone)
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+}
