@@ -56,6 +56,7 @@ public class CustomerFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle("Customers");
         button.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), AddCustomerActivity.class);
             startActivity(intent);
@@ -78,7 +79,6 @@ public class CustomerFragment extends Fragment {
             );
             popupMenu.show();
         });
-
         list.setAdapter(superRecyclerAdapter);
         getCustomers();
 

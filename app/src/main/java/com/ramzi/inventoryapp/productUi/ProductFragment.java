@@ -61,6 +61,7 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+        getActivity().setTitle("Products");
         button.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), AddProductActivity.class);
             intent.putExtra(Extras.mode, Extras.addProduct);
