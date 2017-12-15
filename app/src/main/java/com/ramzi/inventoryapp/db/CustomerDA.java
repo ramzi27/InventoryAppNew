@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import com.ramzi.inventoryapp.entity.Customer;
+import com.ramzi.inventoryapp.entity.Product;
 
 import java.util.List;
 
@@ -26,4 +27,10 @@ public interface CustomerDA {
 
     @Query("select * from customer")
     Flowable<List<Customer>> getAllCustomer();
+
+    @Query("delete from customer")
+    void deleteTable();
+
+    @Query("select * from customer where name=:s")
+    Flowable<List<Customer>> selectCustomer(String s);
 }

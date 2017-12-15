@@ -1,8 +1,10 @@
 package com.ramzi.inventoryapp.productUi;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -27,6 +29,7 @@ import com.ramzi.inventoryapp.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,7 +109,7 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search_product, menu);
+        inflater.inflate(R.menu.search_menu, menu);
         SearchView searchView = (SearchView) menu.getItem(1).getActionView();
         searchView.setQueryHint("search product");
         searchView.setOnQueryTextListener(this);
@@ -115,29 +118,33 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.deleteProducts) {
+        if (item.getItemId() == R.id.deleteAll) {
             DB.getDB(getContext()).getProductDA().deleteTable();
-            getProducts();
         }
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onQueryTextSubmit(String s) {
-        Flowable<List<Product>> listFlowable = DB.getDB(getContext()).getProductDA().selectProduct(s);
-        listFlowable.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(products1 -> {
-                    if (products1.size() > 0) {
-                        products.clear();
-                        products.addAll(products1);
-                        productSuperRecyclerAdapter.setElements(products);
-                        productSuperRecyclerAdapter.notifyDataSetChanged();
-                    } else {
-                        list.setVisibility(View.INVISIBLE);
-                        no.setVisibility(View.VISIBLE);
-                    }
-                });
+//        Flowable<List<Product>> listFlowable = DB.getDB(getContext()).getProductDA().selectProduct(s);
+//        listFlowable.subscribeOn(Schedulers.computation())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(products1 -> {
+//                    if (products1.size() > 0) {
+//                        products.clear();
+//                        products.addAll(products1);
+//                        productSuperRecyclerAdapter.setElements(products);
+//                        productSuperRecyclerAdapter.notifyDataSetChanged();
+//                    } else {
+//                        list.setVisibility(View.INVISIBLE);
+//                        no.setVisibility(View.VISIBLE);
+//                    }
+//                });
+//        return true;
+        List<Product>searchedList=products.stream().filter(product -> product.getName().matches(s)).collect(Collectors.toList());
+        productSuperRecyclerAdapter.setElements(searchedList);
+        productSuperRecyclerAdapter.notifyDataSetChanged();
         return true;
     }
 
@@ -148,7 +155,8 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public boolean onClose() {
-        getProducts();
-        return true;
+        productSuperRecyclerAdapter.setElements(products);
+        productSuperRecyclerAdapter.notifyDataSetChanged();
+        return false;
     }
 }

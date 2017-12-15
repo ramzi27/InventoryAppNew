@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/deleteProducts"
+        android:id="@+id/deleteAll"
         android:title="Delete All" />
     <item
-        android:id="@+id/searchProduct"
+        android:id="@+id/search"
         android:icon="@drawable/ic_search_black_24dp"
-        android:title="search product"
+        android:title="search"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="never|always" />
+        app:showAsAction="always" />
 </menu>
