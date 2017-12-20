@@ -1,8 +1,12 @@
 package com.ramzi.inventoryapp.orderUi;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +22,7 @@ import com.ramzi.inventoryapp.util.Extras;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by user on 12/20/2017.
@@ -31,6 +36,8 @@ public class AddOrder extends AppCompatActivity {
     EditText finalPrice;
     @BindView(R.id.quantity)
     EditText quantity;
+    @BindView(R.id.addProduct)
+    FloatingActionButton floatingActionButton;
     private Order order;
     private Product product;
 
@@ -44,7 +51,11 @@ public class AddOrder extends AppCompatActivity {
         if(getIntent().getExtras()!=null){
             order= (Order) getIntent().getExtras().getSerializable(Extras.order);
         }
+        floatingActionButton.setOnClickListener(view -> {
+            FragmentManager fragmentManager=getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction=
 
+        });
     }
 
     @Override
