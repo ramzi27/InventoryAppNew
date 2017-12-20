@@ -7,4 +7,9 @@
         android:icon="@android:drawable/ic_menu_delete"
         android:title="delete"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/cAddOrder"
+        android:enabled="true"
+        android:title="show orders"
+        android:visible="true" />
 </menu>

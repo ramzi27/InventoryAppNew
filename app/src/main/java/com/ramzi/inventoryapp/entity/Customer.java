@@ -8,13 +8,15 @@ import com.nicolkill.superrecyclerview.annotations.BindField;
 import com.nicolkill.superrecyclerview.annotations.LayoutResource;
 import com.ramzi.inventoryapp.R;
 
+import java.io.Serializable;
+
 /**
  * Created by Ramzi on 24-Nov-17.
  */
 
 @Entity(tableName = "customer")
 @LayoutResource(R.layout.customer_frame)
-public class Customer {
+public class Customer implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;

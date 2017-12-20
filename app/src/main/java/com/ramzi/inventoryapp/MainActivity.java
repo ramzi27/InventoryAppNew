@@ -14,10 +14,11 @@ import android.view.MenuItem;
 
 import com.ramzi.inventoryapp.customerUi.CustomerFragment;
 import com.ramzi.inventoryapp.productUi.ProductFragment;
+import com.ramzi.inventoryapp.util.Extras;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +30,13 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        changeView(new CustomerFragment());
+        CustomerFragment customerFragment=new CustomerFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString(Extras.mode,Extras.showCustomers);
+        customerFragment.setArguments(bundle);
+        changeView(customerFragment);
     }
 
     @Override
@@ -49,16 +54,23 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here
         int id = item.getItemId();
+        navigationView.setCheckedItem(id);
+        Bundle bundle=new Bundle();
         switch (id) {
             case R.id.nav_customer:
-                changeView(new CustomerFragment());
+                CustomerFragment customerFragment=new CustomerFragment();
+                bundle.putString(Extras.mode,Extras.showCustomers);
+                customerFragment.setArguments(bundle);
+                changeView(customerFragment);
                 break;
 
             case R.id.nav_products:
-                changeView(new ProductFragment());
+                ProductFragment productFragment=new ProductFragment();
+                bundle.putString(Extras.mode,Extras.showProducts);
+                productFragment.setArguments(bundle);
+                changeView(productFragment);
                 break;
         }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

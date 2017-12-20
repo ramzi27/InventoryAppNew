@@ -51,6 +51,15 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
 
     private SuperRecyclerAdapter<Product> productSuperRecyclerAdapter;
     private ArrayList<Product> products = new ArrayList<>();
+    private String mode;
+    public interface OnProductSelected{
+        void onSelect(Product product);
+    }
+   private OnProductSelected onProductSelected;
+
+    public void setOnProductSelected(OnProductSelected onProductSelected) {
+        this.onProductSelected = onProductSelected;
+    }
 
     @Nullable
     @Override
@@ -64,7 +73,9 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
-        getActivity().setTitle("Products");
+        if(getArguments().getString(Extras.mode)!=null){
+            mode=getArguments().getString(Extras.mode);
+        }
         button.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), AddProductActivity.class);
             intent.putExtra(Extras.mode, Extras.addProduct);
@@ -78,12 +89,22 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
         list.addItemDecoration(dividerItemDecoration);
         productSuperRecyclerAdapter = new SuperRecyclerAdapter(list);
         list.setAdapter(productSuperRecyclerAdapter);
-        productSuperRecyclerAdapter.setOnClickListener((view, position, element) -> {
-            Intent intent = new Intent(getContext(), AddProductActivity.class);
-            intent.putExtra(Extras.mode, Extras.updateProduct);
-            intent.putExtra(Extras.product, Utils.toJson(element));
-            startActivity(intent);
-        });
+        if (mode.matches(Extras.showProducts)) {
+            getActivity().setTitle("Products");
+            productSuperRecyclerAdapter.setOnClickListener((view, position, element) -> {
+                Intent intent = new Intent(getContext(), AddProductActivity.class);
+                intent.putExtra(Extras.mode, Extras.updateProduct);
+                intent.putExtra(Extras.product, Utils.toJson(element));
+                startActivity(intent);
+            });
+        }
+        else if (mode.matches(Extras.selectProduct)) {
+            getActivity().setTitle("Select Product");
+            productSuperRecyclerAdapter.setOnClickListener((view, position, element) -> {
+           if (onProductSelected!=null)
+               onProductSelected.onSelect(element);
+            });
+        }
         getProducts();
     }
 

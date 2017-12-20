@@ -26,13 +26,14 @@ import com.nicolkill.superrecyclerview.SuperRecyclerAdapter;
 import com.ramzi.inventoryapp.R;
 import com.ramzi.inventoryapp.db.DB;
 import com.ramzi.inventoryapp.entity.Customer;
-import com.ramzi.inventoryapp.entity.Product;
+import com.ramzi.inventoryapp.entity.Order;
+import com.ramzi.inventoryapp.orderUi.OrderActivity;
+import com.ramzi.inventoryapp.util.Extras;
 import com.ramzi.inventoryapp.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +54,17 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
     FloatingActionButton button;
     private SuperRecyclerAdapter<Customer> superRecyclerAdapter;
     private ArrayList<Customer> customers = new ArrayList<>();
+    private String mode;
+
+    public interface OnCustomerSelect{
+        void onSelect(Customer c);
+    }
+
+    private OnCustomerSelect onCustomerSelect;
+
+    public void setOnCustomerSelect(OnCustomerSelect onCustomerSelect) {
+        this.onCustomerSelect = onCustomerSelect;
+    }
 
     @Nullable
     @Override
@@ -65,7 +77,13 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mode=getArguments().getString(Extras.mode);
+        if(mode!=null &&mode.matches(Extras.showCustomers))
         getActivity().setTitle("Customers");
+        if(mode!=null && mode.matches(Extras.selectCustomer)) {
+            getActivity().setTitle("Select Customer");
+        }
+
         setHasOptionsMenu(true);
         button.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), AddCustomerActivity.class);
@@ -78,20 +96,29 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
         list.addItemDecoration(dividerItemDecoration);
         superRecyclerAdapter = new SuperRecyclerAdapter(list);
+
         superRecyclerAdapter.setOnLongClickListener((view, position, element) -> {
             registerForContextMenu(view);
             PopupMenu popupMenu = new PopupMenu(getContext(), view);
-            popupMenu.inflate(R.menu.delete_contextmenu);
+            popupMenu.inflate(R.menu.customer_menu);
             popupMenu.setOnMenuItemClickListener(item -> {
+                if(item.getItemId()==R.id.deleteCustomer)
                         buildDialog(element, view, position);
+                if (item.getItemId()==R.id.cAddOrder) {
+                    Intent intent=new Intent(getContext(), OrderActivity.class);
+                    Bundle bundle=new Bundle();
+                    bundle.putSerializable(Extras.customer,element);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
                         return true;
                     }
+
             );
             popupMenu.show();
         });
         list.setAdapter(superRecyclerAdapter);
         getCustomers();
-
     }
 
     private void buildDialog(Customer element, View view, int pos) {

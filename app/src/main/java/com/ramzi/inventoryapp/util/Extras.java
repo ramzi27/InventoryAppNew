@@ -13,6 +13,10 @@ public final class Extras {
     public static final String mode = "myMode";
     public static final String addProduct = "addProduct";
     public static final String updateProduct = "updateProduct";
+    public static final String selectCustomer = "selectCustomer";
+    public static final String showCustomers = "showCustomers";
+    public static final String showProducts = "showProducts";
+    public static final String selectProduct = "selectProduct";
 
 
 }

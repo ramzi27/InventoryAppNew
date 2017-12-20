@@ -27,6 +27,15 @@
             android:name=".productUi.AddProductActivity"
             android:label="@string/title_activity_add_product"
             android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".orderUi.OrderActivity"
+            android:parentActivityName=".MainActivity"
+            >
+        </activity>
+        <activity android:name=".orderUi.AddOrder"
+            android:parentActivityName=".orderUi.OrderActivity"
+            >
+
+        </activity>
     </application>
 
 </manifest>
