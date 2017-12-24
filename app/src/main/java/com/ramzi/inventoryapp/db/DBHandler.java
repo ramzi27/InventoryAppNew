@@ -22,5 +22,5 @@ public abstract class DBHandler extends RoomDatabase {
 
     abstract public ProductDA getProductDA();
     abstract public OrderDA getOrderDA();
-
+    abstract public OrderDetailsDA getOrderDetailsDA();
 }

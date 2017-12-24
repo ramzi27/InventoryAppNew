@@ -48,10 +48,13 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     RecyclerView list;
     @BindView(R.id.noContent)
     TextView no;
+    @BindView(R.id.productTitle)
+    TextView title;
 
     private SuperRecyclerAdapter<Product> productSuperRecyclerAdapter;
     private ArrayList<Product> products = new ArrayList<>();
     private String mode;
+
     public interface OnProductSelected{
         void onSelect(Product product);
     }
@@ -80,7 +83,6 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
             Intent intent = new Intent(getContext(), AddProductActivity.class);
             intent.putExtra(Extras.mode, Extras.addProduct);
             startActivity(intent);
-
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         list.setLayoutManager(layoutManager);
@@ -99,7 +101,7 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
             });
         }
         else if (mode.matches(Extras.selectProduct)) {
-            getActivity().setTitle("Select Product");
+            title.setVisibility(View.VISIBLE);
             productSuperRecyclerAdapter.setOnClickListener((view, position, element) -> {
            if (onProductSelected!=null)
                onProductSelected.onSelect(element);
@@ -130,11 +132,11 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search_menu, menu);
-        SearchView searchView = (SearchView) menu.getItem(1).getActionView();
-        searchView.setQueryHint("search product");
-        searchView.setOnQueryTextListener(this);
-        searchView.setOnCloseListener(this);
+//        inflater.inflate(R.menu.search_menu, menu);
+//        SearchView searchView = (SearchView) menu.getItem(1).getActionView();
+//        searchView.setQueryHint("search product");
+//        searchView.setOnQueryTextListener(this);
+//        searchView.setOnCloseListener(this);
     }
 
     @Override

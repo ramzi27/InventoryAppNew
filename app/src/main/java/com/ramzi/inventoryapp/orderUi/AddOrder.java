@@ -1,6 +1,5 @@
 package com.ramzi.inventoryapp.orderUi;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,32 +14,35 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ramzi.inventoryapp.R;
+import com.ramzi.inventoryapp.db.DB;
 import com.ramzi.inventoryapp.entity.Order;
 import com.ramzi.inventoryapp.entity.OrderDetails;
 import com.ramzi.inventoryapp.entity.Product;
+import com.ramzi.inventoryapp.productUi.ProductDialog;
+import com.ramzi.inventoryapp.productUi.ProductFragment;
 import com.ramzi.inventoryapp.util.Extras;
+import com.ramzi.inventoryapp.util.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by user on 12/20/2017.
  */
 
-public class AddOrder extends AppCompatActivity {
+public class AddOrder extends AppCompatActivity implements ProductDialog.OnProductSelected {
     private OrderDetails orderDetails=new OrderDetails();
     @BindView(R.id.proName)
     TextView proId;
     @BindView(R.id.finalPrice)
-    EditText finalPrice;
+    TextView finalPrice;
     @BindView(R.id.quantity)
     EditText quantity;
     @BindView(R.id.addProduct)
     FloatingActionButton floatingActionButton;
     private Order order;
     private Product product;
-
+    private ProductDialog productDialog;
     //takes bundle of order
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,9 +54,9 @@ public class AddOrder extends AppCompatActivity {
             order= (Order) getIntent().getExtras().getSerializable(Extras.order);
         }
         floatingActionButton.setOnClickListener(view -> {
-            FragmentManager fragmentManager=getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction=
-
+            productDialog=new ProductDialog();
+            productDialog.setOnProductSelected(this);
+            productDialog.show(getSupportFragmentManager(),"hi");
         });
     }
 
@@ -79,5 +81,22 @@ public class AddOrder extends AppCompatActivity {
     }
 
     private void saveOrder() {
+        if(Utils.isValid(quantity)){
+            OrderDetails orderDetails=new OrderDetails();
+            orderDetails.setFinalPrice(Integer.valueOf(finalPrice.getText().toString()));
+            orderDetails.setOrderID(order.getOrderId());
+            orderDetails.setQuantity(Integer.valueOf(quantity.getText().toString()));
+            orderDetails.setProductID(product.getProductId());
+            DB.getDB(this).getOrderDetailsDA().save(orderDetails);
+            Utils.showSnackbar(proId,"saved");
+        }
+    }
+
+    @Override
+    public void onSelect(Product product) {
+        this.product=product;
+        productDialog.getDialog().cancel();
+        proId.setText(product.getName());
+        finalPrice.setText(product.getPrice()+"");
     }
 }

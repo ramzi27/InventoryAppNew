@@ -27,7 +27,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="product name"
+                android:hint="Product Name"
                 android:textColor="@android:color/background_dark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -48,9 +48,9 @@
 
         </LinearLayout>
 
-        <EditText
+        <TextView
             android:id="@+id/finalPrice"
-            android:layout_width="100dp"
+            android:layout_width="109dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="30dp"
@@ -63,7 +63,7 @@
 
         <EditText
             android:id="@+id/quantity"
-            android:layout_width="100dp"
+            android:layout_width="104dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"

@@ -50,6 +50,7 @@ public class OrderActivity extends AppCompatActivity {
         setContentView(R.layout.list);
         ButterKnife.bind(this);
         Bundle bundle=getIntent().getExtras();
+//        bundle.putSerializable(Extras.order,or);
         if(bundle!=null){
             customer= (Customer) bundle.getSerializable(Extras.customer);
             floatingActionButton.setOnClickListener(view -> {
@@ -60,7 +61,6 @@ public class OrderActivity extends AppCompatActivity {
             });
         }
         setTitle(customer.getName()+" Orders");
-        ButterKnife.bind(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         list.setLayoutManager(layoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
