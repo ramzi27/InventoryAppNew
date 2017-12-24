@@ -18,7 +18,7 @@ import retrofit2.http.POST;
  * Created by user on 12/24/2017.
  */
 
-public interface BackupService {
+public interface APIService {
     @Headers("Content-Type: application/json")
     @POST("backup_customers")
     void backupCustomers(@Body List<Customer>customers);
