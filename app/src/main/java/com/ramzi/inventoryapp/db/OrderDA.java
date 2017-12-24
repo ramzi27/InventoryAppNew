@@ -27,5 +27,8 @@ public interface OrderDA {
     @Query("select * from orderTable where customerId=:c")
     Flowable<List<Order>> getCustomerOrders(int c);
 
+    @Query("select * from orderTable")
+    Flowable<List<Order>> getAllOrders();
+
 
 }

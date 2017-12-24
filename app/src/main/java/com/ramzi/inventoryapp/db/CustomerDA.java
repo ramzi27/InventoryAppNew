@@ -33,4 +33,5 @@ public interface CustomerDA {
 
     @Query("select * from customer where name=:s")
     Flowable<List<Customer>> selectCustomer(String s);
+
 }

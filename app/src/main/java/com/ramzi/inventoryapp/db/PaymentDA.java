@@ -31,5 +31,7 @@ public interface PaymentDA {
     @Query("select * from payment where customerId=:cusID")
     Flowable<List<Payment>> getCustomerPayments(int cusID);
 
+    @Query("select * from payment")
+    Flowable<List<Payment>> getCAllPayments();
 
 }

@@ -21,10 +21,12 @@ import io.reactivex.Single;
 public interface OrderDetailsDA {
 
     @Query("select * from orderDetails where orderID=:orderID")
-    Flowable<List<OrderDetails>>getOrderByOrder(int orderID);
+    Flowable<List<OrderDetails>>getOrderDetailsByOrder(int orderID);
     @Delete
     void deleteOrderDetails(OrderDetails orderDetails);
     @Insert
     void save(OrderDetails orderDetails);
 
+    @Query("select * from orderDetails")
+    Flowable<List<OrderDetails>>getAllOrderDetails();
 }
