@@ -5,7 +5,6 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.ramzi.inventoryapp.entity.Customer;
 import com.ramzi.inventoryapp.entity.Order;
 
 import java.util.List;
@@ -30,5 +29,7 @@ public interface OrderDA {
     @Query("select * from orderTable")
     Flowable<List<Order>> getAllOrders();
 
+    @Query("delete from orderTable")
+    void deleteTable();
 
 }

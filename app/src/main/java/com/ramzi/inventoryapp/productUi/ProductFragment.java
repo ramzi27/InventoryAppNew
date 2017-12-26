@@ -55,17 +55,13 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     private SuperRecyclerAdapter<Product> productSuperRecyclerAdapter;
     private ArrayList<Product> products = new ArrayList<>();
     private String mode;
+    private OnProductSelected onProductSelected;
 
     @Override
     public void onRefresh() {
         productSuperRecyclerAdapter.clearData();
         getProducts();
     }
-
-    public interface OnProductSelected{
-        void onSelect(Product product);
-    }
-   private OnProductSelected onProductSelected;
 
     public void setOnProductSelected(OnProductSelected onProductSelected) {
         this.onProductSelected = onProductSelected;
@@ -123,7 +119,7 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
 
     private void getProducts() {
         Flowable<List<Product>> listFlowable = DB.getDB(getContext()).getProductDA().getAllProducts();
-        listFlowable.subscribeOn(Schedulers.computation())
+        listFlowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(products1 -> {
                     if (products1.size() > 0) {
@@ -144,11 +140,13 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search_menu, menu);
-        SearchView searchView = (SearchView) menu.getItem(1).getActionView();
-        searchView.setQueryHint("search product");
-        searchView.setOnQueryTextListener(this);
-        searchView.setOnCloseListener(this);
+        if (mode.matches(Extras.showCustomers)) {
+            inflater.inflate(R.menu.search_menu, menu);
+            SearchView searchView = (SearchView) menu.getItem(1).getActionView();
+            searchView.setQueryHint("search product");
+            searchView.setOnQueryTextListener(this);
+            searchView.setOnCloseListener(this);
+        }
     }
 
     @Override
@@ -203,5 +201,9 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
         no.setVisibility(View.INVISIBLE);
         list.setVisibility(View.VISIBLE);
         return false;
+    }
+
+    public interface OnProductSelected {
+        void onSelect(Product product);
     }
 }

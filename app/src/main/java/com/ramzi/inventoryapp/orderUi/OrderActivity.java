@@ -1,6 +1,7 @@
 package com.ramzi.inventoryapp.orderUi;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.PopupMenu;
@@ -53,14 +57,16 @@ public class OrderActivity extends AppCompatActivity implements DatePickerDialog
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list);
+        setContentView(R.layout.order_details_activity);
         ButterKnife.bind(this);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle bundle=getIntent().getExtras();
         if(bundle!=null){
             customer= (Customer) bundle.getSerializable(Extras.customer);
             floatingActionButton.setOnClickListener(view -> {
                 addOrder();
-
             });
         }
         setTitle(customer.getName()+" Orders");
@@ -80,6 +86,14 @@ public class OrderActivity extends AppCompatActivity implements DatePickerDialog
                 return true;
             });
         });
+
+        superRecyclerAdapter.setOnClickListener((view, position, element) -> {
+            bundle.putSerializable(Extras.order, element);
+            Intent intent = new Intent(this, OrderDetailsActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+
        if (bundle!=null)
            getOrders();
     }
@@ -143,5 +157,20 @@ public class OrderActivity extends AppCompatActivity implements DatePickerDialog
         } else {
             Utils.showToast(this, "order not saved");
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.deleteAll)
+            DB.getDB(this).getOrderDA().deleteTable();
+        else if (item.getItemId() == android.R.id.home)
+            onBackPressed();
+        return true;
     }
 }

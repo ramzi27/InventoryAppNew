@@ -3,7 +3,10 @@ package com.ramzi.inventoryapp.entity;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
-import android.widget.ProgressBar;
+
+import com.nicolkill.superrecyclerview.annotations.BindField;
+import com.nicolkill.superrecyclerview.annotations.LayoutResource;
+import com.ramzi.inventoryapp.R;
 
 import java.io.Serializable;
 
@@ -13,7 +16,7 @@ import java.io.Serializable;
 @Entity(tableName = "orderDetails", foreignKeys = {@ForeignKey(entity = Order.class, parentColumns = "orderId", childColumns = "orderID"),
         @ForeignKey(entity = Product.class, parentColumns = "productId", childColumns = "productID")
 })
-
+@LayoutResource(R.layout.product_frame)
 public class OrderDetails implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -21,6 +24,24 @@ public class OrderDetails implements Serializable {
     private int productID;
     private int finalPrice;
     private int quantity;
+
+    @BindField(id = R.id.pName)
+    public String getProductName() {
+        return "ID: " + productID;
+    }
+
+
+    @BindField(id = R.id.pPrice)
+    public String getPrice() {
+        return finalPrice + " $";
+    }
+
+
+    @BindField(id = R.id.pUnit)
+    public String getUnits() {
+        return quantity + " unit";
+    }
+
 
     public int getId() {
         return id;
