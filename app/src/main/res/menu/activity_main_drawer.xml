@@ -9,10 +9,6 @@
             android:icon="@drawable/nav_ic_customer"
             android:title="Customers" />
         <item
-            android:id="@+id/nav_order"
-            android:icon="@drawable/ic_nav_order"
-            android:title="Orders" />
-        <item
             android:id="@+id/nav_products"
             android:icon="@drawable/nav_ic_products"
             android:title="Products" />

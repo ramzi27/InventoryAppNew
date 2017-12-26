@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,19 +42,25 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Ramzi on 01-Dec-17.
  */
 
-public class ProductFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+public class ProductFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener, SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.add)
     FloatingActionButton button;
     @BindView(R.id.list)
     RecyclerView list;
     @BindView(R.id.noContent)
     TextView no;
-    @BindView(R.id.productTitle)
-    TextView title;
+    @BindView(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
 
     private SuperRecyclerAdapter<Product> productSuperRecyclerAdapter;
     private ArrayList<Product> products = new ArrayList<>();
     private String mode;
+
+    @Override
+    public void onRefresh() {
+        productSuperRecyclerAdapter.clearData();
+        getProducts();
+    }
 
     public interface OnProductSelected{
         void onSelect(Product product);
@@ -75,6 +82,9 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setEnabled(true);
+        refreshLayout.setColorSchemeResources(R.color.refresh_toolbar_color,R.color.refresh_color);
         setHasOptionsMenu(true);
         if(getArguments().getString(Extras.mode)!=null){
             mode=getArguments().getString(Extras.mode);
@@ -83,6 +93,7 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
             Intent intent = new Intent(getContext(), AddProductActivity.class);
             intent.putExtra(Extras.mode, Extras.addProduct);
             startActivity(intent);
+
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         list.setLayoutManager(layoutManager);
@@ -101,7 +112,7 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
             });
         }
         else if (mode.matches(Extras.selectProduct)) {
-            title.setVisibility(View.VISIBLE);
+            getActivity().setTitle("Select Product");
             productSuperRecyclerAdapter.setOnClickListener((view, position, element) -> {
            if (onProductSelected!=null)
                onProductSelected.onSelect(element);
@@ -126,17 +137,18 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
                         list.setVisibility(View.INVISIBLE);
                         no.setVisibility(View.VISIBLE);
                     }
+                    refreshLayout.setRefreshing(false);
                 });
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.search_menu, menu);
-//        SearchView searchView = (SearchView) menu.getItem(1).getActionView();
-//        searchView.setQueryHint("search product");
-//        searchView.setOnQueryTextListener(this);
-//        searchView.setOnCloseListener(this);
+        inflater.inflate(R.menu.search_menu, menu);
+        SearchView searchView = (SearchView) menu.getItem(1).getActionView();
+        searchView.setQueryHint("search product");
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnCloseListener(this);
     }
 
     @Override
@@ -166,8 +178,16 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
 //                });
 //        return true;
         List<Product>searchedList=products.stream().filter(product -> product.getName().matches(s)).collect(Collectors.toList());
-        productSuperRecyclerAdapter.setElements(searchedList);
-        productSuperRecyclerAdapter.notifyDataSetChanged();
+        if (searchedList.size()>0) {
+            no.setVisibility(View.INVISIBLE);
+            list.setVisibility(View.VISIBLE);
+            productSuperRecyclerAdapter.setElements(searchedList);
+            productSuperRecyclerAdapter.notifyDataSetChanged();
+        }
+        else{
+            no.setVisibility(View.VISIBLE);
+            list.setVisibility(View.INVISIBLE);
+        }
         return true;
     }
 
@@ -180,6 +200,8 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     public boolean onClose() {
         productSuperRecyclerAdapter.setElements(products);
         productSuperRecyclerAdapter.notifyDataSetChanged();
+        no.setVisibility(View.INVISIBLE);
+        list.setVisibility(View.VISIBLE);
         return false;
     }
 }

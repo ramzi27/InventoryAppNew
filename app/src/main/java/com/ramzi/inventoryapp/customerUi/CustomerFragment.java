@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,16 +46,24 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Ramzi on 25-Nov-17.
  */
 
-public class CustomerFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+public class CustomerFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener, SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.list)
     RecyclerView list;
     @BindView(R.id.noContent)
     TextView no;
     @BindView(R.id.add)
     FloatingActionButton button;
+    @BindView(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
     private SuperRecyclerAdapter<Customer> superRecyclerAdapter;
     private ArrayList<Customer> customers = new ArrayList<>();
     private String mode;
+
+    @Override
+    public void onRefresh() {
+        superRecyclerAdapter.clearData();
+        getCustomers();
+    }
 
     public interface OnCustomerSelect{
         void onSelect(Customer c);
@@ -77,6 +86,9 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setEnabled(true);
+        refreshLayout.setColorSchemeResources(R.color.refresh_toolbar_color,R.color.refresh_color);
         mode=getArguments().getString(Extras.mode);
         if(mode!=null &&mode.matches(Extras.showCustomers))
         getActivity().setTitle("Customers");
@@ -151,6 +163,7 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
                         list.setVisibility(View.INVISIBLE);
                         no.setVisibility(View.VISIBLE);
                     }
+                    refreshLayout.setRefreshing(false);
                 });
     }
 
@@ -195,8 +208,17 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
 //                });
 
         List<Customer>searchedList=customers.stream().filter(customer -> customer.getName().matches(s)).collect(Collectors.toList());
-        superRecyclerAdapter.setElements(searchedList);
-        superRecyclerAdapter.notifyDataSetChanged();
+        if (searchedList.size()>0) {
+            no.setVisibility(View.INVISIBLE);
+            list.setVisibility(View.VISIBLE);
+            superRecyclerAdapter.setElements(searchedList);
+            superRecyclerAdapter.notifyDataSetChanged();
+        }
+        else{
+            no.setVisibility(View.VISIBLE);
+            list.setVisibility(View.INVISIBLE);
+        }
+
         return true;
     }
 
@@ -209,6 +231,8 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
     public boolean onClose() {
         superRecyclerAdapter.setElements(customers);
         superRecyclerAdapter.notifyDataSetChanged();
+        no.setVisibility(View.INVISIBLE);
+        list.setVisibility(View.VISIBLE);
         return false;
     }
 }
