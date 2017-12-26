@@ -85,6 +85,12 @@ public class AddOrderDetailsActivity extends AppCompatActivity implements Produc
             orderDetails.setProductID(product.getProductId());
             DB.getDB(this).getOrderDetailsDA().save(orderDetails);
             Utils.showSnackbar(proId, "saved");
+            Utils.clearTexts();
+            finalPrice.setText("");
+            quantity.setText("");
+            proId.setText("");
+        } else {
+            Utils.showSnackbar(proId, "select product first!");
         }
     }
 
