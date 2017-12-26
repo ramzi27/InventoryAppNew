@@ -9,7 +9,7 @@ import com.nicolkill.superrecyclerview.annotations.LayoutResource;
 import com.ramzi.inventoryapp.R;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by user on 12/12/2017.
@@ -19,9 +19,25 @@ import java.util.Calendar;
 public class Order implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int orderId;
-    private long date;
-    private long dueDate;
+    private Date date;
+    private Date dueDate;
     private int customerId;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
 
     @BindField(id=R.id.oId)
     public String getID(){return orderId+"";}
@@ -34,27 +50,9 @@ public class Order implements Serializable {
         this.orderId = orderId;
     }
 
-    public long getDate() {
-        return date;
-    }
-
-    public void setDate(long date) {
-        this.date = date;
-    }
-
     @BindField(id=R.id.oDate)
-    public String getDa(){
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTimeInMillis(date);
-        return calendar.getTime().toString();
-
-    }
-    public long getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(long dueDate) {
-        this.dueDate = dueDate;
+    public String getMyDate() {
+        return dueDate.toString();
     }
 
     public int getCustomerId() {

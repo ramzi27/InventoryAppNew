@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.Date;
+
 /**
  * Created by Ramzi on 28-Nov-17.
  */
@@ -17,7 +19,7 @@ public class Payment {
     private long amount;
     @ColumnInfo(name = "customerId")
     private int customerId;
-    private String date;
+    private Date date;
     private int voidInd;
 
     public int getId() {
@@ -44,11 +46,11 @@ public class Payment {
         this.customerId = customerId;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

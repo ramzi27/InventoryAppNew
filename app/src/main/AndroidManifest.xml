@@ -22,19 +22,22 @@
         <activity
             android:name=".customerUi.AddCustomerActivity"
             android:label="@string/title_activity_add_customer"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".productUi.AddProductActivity"
             android:label="@string/title_activity_add_product"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".orderUi.OrderActivity"
             android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".orderUi.OrderActivity"
-            android:parentActivityName=".MainActivity"
-            >
-        </activity>
-        <activity android:name=".orderUi.AddOrder"
+        <activity
+            android:name=".orderUi.OrderDetailsActivity"
+            android:label="@string/title_activity_order_details"
             android:parentActivityName=".orderUi.OrderActivity"
-            >
-
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ramzi.inventoryapp.orderUi.OrderActivity" />
         </activity>
     </application>
 

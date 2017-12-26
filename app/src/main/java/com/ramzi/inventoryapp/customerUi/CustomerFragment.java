@@ -27,7 +27,6 @@ import com.nicolkill.superrecyclerview.SuperRecyclerAdapter;
 import com.ramzi.inventoryapp.R;
 import com.ramzi.inventoryapp.db.DB;
 import com.ramzi.inventoryapp.entity.Customer;
-import com.ramzi.inventoryapp.entity.Order;
 import com.ramzi.inventoryapp.orderUi.OrderActivity;
 import com.ramzi.inventoryapp.util.Extras;
 import com.ramzi.inventoryapp.util.Utils;
@@ -58,18 +57,13 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
     private SuperRecyclerAdapter<Customer> superRecyclerAdapter;
     private ArrayList<Customer> customers = new ArrayList<>();
     private String mode;
+    private OnCustomerSelect onCustomerSelect;
 
     @Override
     public void onRefresh() {
         superRecyclerAdapter.clearData();
         getCustomers();
     }
-
-    public interface OnCustomerSelect{
-        void onSelect(Customer c);
-    }
-
-    private OnCustomerSelect onCustomerSelect;
 
     public void setOnCustomerSelect(OnCustomerSelect onCustomerSelect) {
         this.onCustomerSelect = onCustomerSelect;
@@ -110,14 +104,13 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         superRecyclerAdapter = new SuperRecyclerAdapter(list);
 
         superRecyclerAdapter.setOnLongClickListener((view, position, element) -> {
-            registerForContextMenu(view);
             PopupMenu popupMenu = new PopupMenu(getContext(), view);
             popupMenu.inflate(R.menu.customer_menu);
             popupMenu.setOnMenuItemClickListener(item -> {
                 if(item.getItemId()==R.id.deleteCustomer)
                         buildDialog(element, view, position);
                 if (item.getItemId()==R.id.cAddOrder) {
-                    Intent intent=new Intent(getContext(), OrderActivity.class);
+                    Intent intent = new Intent(getContext(), OrderActivity.class);
                     Bundle bundle=new Bundle();
                     bundle.putSerializable(Extras.customer,element);
                     intent.putExtras(bundle);
@@ -234,5 +227,9 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         no.setVisibility(View.INVISIBLE);
         list.setVisibility(View.VISIBLE);
         return false;
+    }
+
+    public interface OnCustomerSelect {
+        void onSelect(Customer c);
     }
 }

@@ -15,12 +15,8 @@ import com.ramzi.inventoryapp.R;
 import com.ramzi.inventoryapp.db.DB;
 import com.ramzi.inventoryapp.networking.RestService;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -86,5 +82,10 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                     backResult.setText("backing up customers .....");
                     RestService.getAPIService().backupCustomers(customers);
                 });
+    }
+
+    @Override
+    public void onClick(View view) {
+        backUp();
     }
 }
