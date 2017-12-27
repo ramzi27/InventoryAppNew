@@ -3,6 +3,7 @@ package com.ramzi.inventoryapp.backup;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.ramzi.inventoryapp.R;
 import com.ramzi.inventoryapp.db.DB;
 import com.ramzi.inventoryapp.networking.RestService;
+import com.ramzi.inventoryapp.util.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by user on 12/24/2017.
  */
 
-public class BackupFragment extends Fragment implements View.OnClickListener {
+public class BackupFragment extends Fragment {
     @BindView(R.id.backUp)
     Button backUp;
     @BindView(R.id.backResult)
@@ -55,37 +57,53 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
         DB.getDB(getContext()).getCustomerDA().getAllCustomer().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(customers -> {
-                    backResult.setText("backing up customers .....");
-                    RestService.getAPIService().backupCustomers(customers);
+                    RestService.getBackupService().backupCustomers(customers).observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
+                        Utils.showToast(getContext(), "customer backup success!");
+                    }, throwable -> throwable.printStackTrace());
                 });
         DB.getDB(getContext()).getProductDA().getAllProducts().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(products -> {
+                    Log.i(getContext().getPackageName(), products.toString());
                     backResult.setText("backing up products .....");
-                    RestService.getAPIService().backupProducts(products);
+                    RestService.getBackupService().backupProducts(products).observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
+                        Utils.showToast(getContext(), "product backup success!");
+                    }, throwable -> throwable.printStackTrace());
                 });
-        DB.getDB(getContext()).getCustomerDA().getAllCustomer().subscribeOn(Schedulers.io())
+        DB.getDB(getContext()).getOrderDA().getAllOrders().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(customers -> {
-                    backResult.setText("backing up customers .....");
-                    RestService.getAPIService().backupCustomers(customers);
-                });
-        DB.getDB(getContext()).getCustomerDA().getAllCustomer().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(customers -> {
-                    backResult.setText("backing up customers .....");
-                    RestService.getAPIService().backupCustomers(customers);
-                });
-        DB.getDB(getContext()).getCustomerDA().getAllCustomer().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(customers -> {
-                    backResult.setText("backing up customers .....");
-                    RestService.getAPIService().backupCustomers(customers);
-                });
-    }
+                .subscribe(orders -> {
+                    backResult.setText("backing up orders .....");
+                    RestService.getBackupService().backupOrders(orders).observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
+                        Utils.showToast(getContext(), "order backup success!");
 
-    @Override
-    public void onClick(View view) {
-        backUp();
+                    }, throwable -> throwable.printStackTrace());
+                });
+        DB.getDB(getContext()).getOrderDetailsDA().getAllOrderDetails().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(orderDetails -> {
+                    backResult.setText("backing up order details .....");
+                    RestService.getBackupService().backupOrderDetails(orderDetails).observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
+                        Utils.showToast(getContext(), "order details backup success!");
+
+                    }, throwable -> throwable.printStackTrace());
+                });
+        DB.getDB(getContext()).getPaymentDA().getAllPayments().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(payments -> {
+                    backResult.setText("backing up payments .....");
+                    RestService.getBackupService().backupPayments(payments).observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
+                        Utils.showToast(getContext(), "payment backup success!");
+                    }, throwable -> throwable.printStackTrace());
+                    progressContainer.setVisibility(View.INVISIBLE);
+                    dataBaseResult.setText("Done");
+
+                });
+
     }
 }

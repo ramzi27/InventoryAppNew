@@ -14,6 +14,7 @@ import com.ramzi.inventoryapp.R;
 import com.ramzi.inventoryapp.db.DB;
 import com.ramzi.inventoryapp.entity.Order;
 import com.ramzi.inventoryapp.entity.OrderDetails;
+import com.ramzi.inventoryapp.entity.Payment;
 import com.ramzi.inventoryapp.entity.Product;
 import com.ramzi.inventoryapp.productUi.ProductDialog;
 import com.ramzi.inventoryapp.util.Extras;
@@ -21,6 +22,8 @@ import com.ramzi.inventoryapp.util.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by user on 12/20/2017.
@@ -89,6 +92,22 @@ public class AddOrderDetailsActivity extends AppCompatActivity implements Produc
             finalPrice.setText("");
             quantity.setText("");
             proId.setText("");
+            //update total price
+            DB.getDB(this).getOrderDetailsDA().getOrderDetailsByOrder(order.getOrderId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(orderDetails1 -> {
+                        int total = 0;
+                        for (OrderDetails o : orderDetails1) {
+                            total += (o.getFinalPrice()) * (o.getQuantity());
+                        }
+                        Payment payment = new Payment();
+                        payment.setAmount(total);
+                        payment.setCustomerId(order.getCustomerId());
+                        payment.setDate(order.getDueDate());
+                        DB.getDB(this).getPaymentDA().save(payment);
+                    });
+
         } else {
             Utils.showSnackbar(proId, "select product first!");
         }

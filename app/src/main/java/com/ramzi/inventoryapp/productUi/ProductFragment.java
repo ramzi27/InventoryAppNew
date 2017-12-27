@@ -51,6 +51,8 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     TextView no;
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.productTitle)
+    TextView productTitle;
 
     private SuperRecyclerAdapter<Product> productSuperRecyclerAdapter;
     private ArrayList<Product> products = new ArrayList<>();
@@ -109,8 +111,9 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
         }
         else if (mode.matches(Extras.selectProduct)) {
             getActivity().setTitle("Select Product");
+            productTitle.setVisibility(View.VISIBLE);
             productSuperRecyclerAdapter.setOnClickListener((view, position, element) -> {
-           if (onProductSelected!=null)
+                if (onProductSelected != null)
                onProductSelected.onSelect(element);
             });
         }

@@ -5,12 +5,16 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.nicolkill.superrecyclerview.annotations.BindField;
+import com.nicolkill.superrecyclerview.annotations.LayoutResource;
+import com.ramzi.inventoryapp.R;
+
 import java.util.Date;
 
 /**
  * Created by Ramzi on 28-Nov-17.
  */
-
+@LayoutResource(value = R.layout.payment_frame)
 @Entity(tableName = "payment", foreignKeys = {@ForeignKey(entity = Customer.class, parentColumns = "id", childColumns = "customerId")})
 public class Payment {
     @PrimaryKey(autoGenerate = true)
@@ -20,7 +24,6 @@ public class Payment {
     @ColumnInfo(name = "customerId")
     private int customerId;
     private Date date;
-    private int voidInd;
 
     public int getId() {
         return id;
@@ -54,11 +57,19 @@ public class Payment {
         this.date = date;
     }
 
-    public int getVoidInd() {
-        return voidInd;
+
+    @BindField(id = R.id.pID)
+    public String i() {
+        return id + "";
     }
 
-    public void setVoidInd(int voidInd) {
-        this.voidInd = voidInd;
+    @BindField(id = R.id.pAmount)
+    public String money() {
+        return amount + " $";
+    }
+
+    @BindField(id = R.id.pDueDate)
+    public String date() {
+        return date.toString();
     }
 }

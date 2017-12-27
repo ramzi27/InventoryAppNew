@@ -20,16 +20,8 @@ public class Customer implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
-    private int voidInd;
     private String name, address, phone;
 
-    public int getVoidInd() {
-        return voidInd;
-    }
-
-    public void setVoidInd(int voidInd) {
-        this.voidInd = voidInd;
-    }
 
     public int getId() {
         return id;
@@ -70,7 +62,6 @@ public class Customer implements Serializable {
     public String toString() {
         return "Customer{" +
                 "id=" + id +
-                ", voidInd=" + voidInd +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +

@@ -32,4 +32,7 @@ public interface OrderDA {
     @Query("delete from orderTable")
     void deleteTable();
 
+    @Insert
+    void saveAll(List<Order> orders);
+
 }

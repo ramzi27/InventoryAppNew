@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ramzi.inventoryapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -30,14 +32,19 @@
         <activity
             android:name=".orderUi.OrderActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".orderUi.OrderDetailsActivity"
             android:parentActivityName=".orderUi.OrderActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".orderUi.AddOrderDetailsActivity"
-            android:parentActivityName=".orderUi.OrderDetailsActivity">
+            android:parentActivityName=".orderUi.OrderDetailsActivity"></activity>
+        <activity
+            android:name=".paymentUi.PaymentActivity"
+            android:label="@string/title_activity_payment"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

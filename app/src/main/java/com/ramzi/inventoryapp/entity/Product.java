@@ -75,4 +75,14 @@ public class Product {
         return unit + " unit";
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", unit=" + unit +
+                ", Quantity=" + Quantity +
+                '}';
+    }
 }

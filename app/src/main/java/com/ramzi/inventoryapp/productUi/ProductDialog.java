@@ -8,21 +8,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.ramzi.inventoryapp.R;
 import com.ramzi.inventoryapp.entity.Product;
 import com.ramzi.inventoryapp.util.Extras;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by user on 12/24/2017.
  */
 
 public class ProductDialog extends DialogFragment implements ProductFragment.OnProductSelected {
+
+    OnProductSelected onProductSelected;
 
     @Override
     public void onSelect(Product product) {
@@ -31,10 +28,6 @@ public class ProductDialog extends DialogFragment implements ProductFragment.OnP
             getDialog().cancel();
         }
     }
-
-    public interface OnProductSelected extends ProductFragment.OnProductSelected{
-    }
-    OnProductSelected onProductSelected;
 
     public void setOnProductSelected(OnProductSelected onProductSelected) {
         this.onProductSelected = onProductSelected;
@@ -49,7 +42,6 @@ public class ProductDialog extends DialogFragment implements ProductFragment.OnP
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            getDialog().setTitle("select product");
             getDialog().setCancelable(false);
             FragmentManager fragmentManager=getChildFragmentManager();
             FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
@@ -61,5 +53,8 @@ public class ProductDialog extends DialogFragment implements ProductFragment.OnP
             productFragment.setArguments(bundle);
             fragmentTransaction.add(R.id.fragmentContainer,productFragment);
             fragmentTransaction.commit();
+    }
+
+    public interface OnProductSelected extends ProductFragment.OnProductSelected {
     }
 }

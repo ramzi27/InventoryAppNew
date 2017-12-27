@@ -12,7 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.ramzi.inventoryapp.backup.BackupFragment;
+import com.ramzi.inventoryapp.backup.RestoreFragment;
 import com.ramzi.inventoryapp.customerUi.CustomerFragment;
+import com.ramzi.inventoryapp.paymentUi.PaymentFragment;
 import com.ramzi.inventoryapp.productUi.ProductFragment;
 import com.ramzi.inventoryapp.util.Extras;
 
@@ -69,6 +72,15 @@ public class MainActivity extends AppCompatActivity
                 bundle.putString(Extras.mode,Extras.showProducts);
                 productFragment.setArguments(bundle);
                 changeView(productFragment);
+                break;
+            case R.id.nav_backup:
+                changeView(new BackupFragment());
+                break;
+            case R.id.nav_restore:
+                changeView(new RestoreFragment());
+                break;
+            case R.id.nav_payment:
+                changeView(new PaymentFragment());
                 break;
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

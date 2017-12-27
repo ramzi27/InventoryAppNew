@@ -28,6 +28,7 @@ import com.ramzi.inventoryapp.R;
 import com.ramzi.inventoryapp.db.DB;
 import com.ramzi.inventoryapp.entity.Customer;
 import com.ramzi.inventoryapp.orderUi.OrderActivity;
+import com.ramzi.inventoryapp.paymentUi.PaymentActivity;
 import com.ramzi.inventoryapp.util.Extras;
 import com.ramzi.inventoryapp.util.Utils;
 
@@ -57,7 +58,6 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
     private SuperRecyclerAdapter<Customer> superRecyclerAdapter;
     private ArrayList<Customer> customers = new ArrayList<>();
     private String mode;
-    private OnCustomerSelect onCustomerSelect;
 
     @Override
     public void onRefresh() {
@@ -65,9 +65,6 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         getCustomers();
     }
 
-    public void setOnCustomerSelect(OnCustomerSelect onCustomerSelect) {
-        this.onCustomerSelect = onCustomerSelect;
-    }
 
     @Nullable
     @Override
@@ -102,20 +99,32 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
         list.addItemDecoration(dividerItemDecoration);
         superRecyclerAdapter = new SuperRecyclerAdapter(list);
+        superRecyclerAdapter.setOnClickListener((view, position, element) -> {
 
+            superRecyclerAdapter.setOnClickListener((view1, position1, element1) -> {
+                if (mode.matches(Extras.addPayment)) {
+                    Intent intent = new Intent(getContext(), PaymentActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Extras.customer, element1);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            });
+
+        });
         superRecyclerAdapter.setOnLongClickListener((view, position, element) -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), view);
             popupMenu.inflate(R.menu.customer_menu);
             popupMenu.setOnMenuItemClickListener(item -> {
-                if(item.getItemId()==R.id.deleteCustomer)
-                        buildDialog(element, view, position);
-                if (item.getItemId()==R.id.cAddOrder) {
-                    Intent intent = new Intent(getContext(), OrderActivity.class);
-                    Bundle bundle=new Bundle();
-                    bundle.putSerializable(Extras.customer,element);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
+                        if (item.getItemId() == R.id.deleteCustomer)
+                            buildDialog(element, view, position);
+                        if (item.getItemId() == R.id.cAddOrder) {
+                            Intent intent = new Intent(getContext(), OrderActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(Extras.customer, element);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
                         return true;
                     }
 
@@ -142,7 +151,7 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
 
     private void getCustomers() {
         Flowable<List<Customer>> customerFlowable = DB.getDB(getContext()).getCustomerDA().getAllCustomer();
-        customerFlowable.subscribeOn(Schedulers.computation())
+        customerFlowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(customers1 -> {
                     if (customers1.size() > 0) {

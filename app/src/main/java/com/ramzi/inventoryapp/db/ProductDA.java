@@ -30,4 +30,7 @@ public interface ProductDA {
 
     @Query("delete from product")
     void deleteTable();
+
+    @Insert
+    void saveAll(List<Product> products);
 }
