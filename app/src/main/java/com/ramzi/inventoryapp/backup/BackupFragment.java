@@ -49,6 +49,7 @@ public class BackupFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("BackUp");
         backUp.setOnClickListener(view1 -> backUp());
     }
 
@@ -60,7 +61,7 @@ public class BackupFragment extends Fragment {
                     RestService.getBackupService().backupCustomers(customers).observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
                         Utils.showToast(getContext(), "customer backup success!");
-                    }, throwable -> throwable.printStackTrace());
+                    }, throwable -> Utils.showToast(getContext(), "can't backup"));
                 });
         DB.getDB(getContext()).getProductDA().getAllProducts().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -70,7 +71,7 @@ public class BackupFragment extends Fragment {
                     RestService.getBackupService().backupProducts(products).observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
                         Utils.showToast(getContext(), "product backup success!");
-                    }, throwable -> throwable.printStackTrace());
+                    }, throwable -> Utils.showToast(getContext(), "can't backup"));
                 });
         DB.getDB(getContext()).getOrderDA().getAllOrders().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,7 +81,7 @@ public class BackupFragment extends Fragment {
                             .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
                         Utils.showToast(getContext(), "order backup success!");
 
-                    }, throwable -> throwable.printStackTrace());
+                    }, throwable -> Utils.showToast(getContext(), "can't backup"));
                 });
         DB.getDB(getContext()).getOrderDetailsDA().getAllOrderDetails().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,7 +91,7 @@ public class BackupFragment extends Fragment {
                             .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
                         Utils.showToast(getContext(), "order details backup success!");
 
-                    }, throwable -> throwable.printStackTrace());
+                    }, throwable -> Utils.showToast(getContext(), "can't backup"));
                 });
         DB.getDB(getContext()).getPaymentDA().getAllPayments().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -99,7 +100,7 @@ public class BackupFragment extends Fragment {
                     RestService.getBackupService().backupPayments(payments).observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
                         Utils.showToast(getContext(), "payment backup success!");
-                    }, throwable -> throwable.printStackTrace());
+                    }, throwable -> Utils.showToast(getContext(), "can't backup"));
                     progressContainer.setVisibility(View.INVISIBLE);
                     dataBaseResult.setText("Done");
 

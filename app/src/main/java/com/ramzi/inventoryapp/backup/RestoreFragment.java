@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.ramzi.inventoryapp.R;
 import com.ramzi.inventoryapp.db.DB;
 import com.ramzi.inventoryapp.networking.RestService;
+import com.ramzi.inventoryapp.util.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +47,8 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Restore");
+
         backUp.setText("Restore Database");
         backUp.setOnClickListener(view1 -> backUp());
     }
@@ -60,6 +63,8 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
 //                    DB.getDB(getContext()).getCustomerDA().deleteTable();
                     DB.getDB(getContext()).getCustomerDA().saveAll(customers);
                     x[0] = customers.size();
+                }, throwable -> {
+                    Utils.showToast(getContext(), "can't restore");
                 });
 
         RestService.getRestoreService().restoreProducts().subscribeOn(Schedulers.io())
@@ -68,6 +73,8 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
 //                    DB.getDB(getContext()).getProductDA().deleteTable();
                     DB.getDB(getContext()).getProductDA().saveAll(products);
                     x[1] = products.size();
+                }, throwable -> {
+                    Utils.showToast(getContext(), "can't restore");
                 });
 
         RestService.getRestoreService().restoreOrders().subscribeOn(Schedulers.io())
@@ -76,6 +83,8 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
 //                    DB.getDB(getContext()).getOrderDA().deleteTable();
                     DB.getDB(getContext()).getOrderDA().saveAll(orders);
                     x[2] = orders.size();
+                }, throwable -> {
+                    Utils.showToast(getContext(), "can't restore");
                 });
 
         RestService.getRestoreService().restoreOrderDetails().subscribeOn(Schedulers.io())
@@ -84,6 +93,8 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
 //                    DB.getDB(getContext()).getOrderDetailsDA().deleteTable();
                     DB.getDB(getContext()).getOrderDetailsDA().saveAll(orderDetails);
                     x[3] = orderDetails.size();
+                }, throwable -> {
+                    Utils.showToast(getContext(), "can't restore");
                 });
 
         RestService.getRestoreService().restorePayments().subscribeOn(Schedulers.io())
@@ -99,6 +110,8 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
                             "restored order details: " + x[3] + "\n" +
                             "restored payment: " + x[4];
                     backResult.setText(s);
+                }, throwable -> {
+                    Utils.showToast(getContext(), "can't restore");
                 });
 
 

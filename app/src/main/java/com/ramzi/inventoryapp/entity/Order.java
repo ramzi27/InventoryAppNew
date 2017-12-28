@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nicolkill.superrecyclerview.annotations.BindField;
 import com.nicolkill.superrecyclerview.annotations.LayoutResource;
 import com.ramzi.inventoryapp.R;
@@ -39,6 +40,7 @@ public class Order implements Serializable {
         this.dueDate = dueDate;
     }
 
+    @JsonIgnore
     @BindField(id=R.id.oId)
     public String getID(){return orderId+"";}
 
@@ -50,6 +52,7 @@ public class Order implements Serializable {
         this.orderId = orderId;
     }
 
+    @JsonIgnore
     @BindField(id=R.id.oDate)
     public String getMyDate() {
         return dueDate.toString();

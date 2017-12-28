@@ -68,7 +68,7 @@ public class PaymentActivity extends AppCompatActivity implements SwipeRefreshLa
 
     private void getPaymentsFromDB() {
         Flowable<List<Payment>> paymentFlowable = DB.getDB(this).getPaymentDA().getCustomerPayments(customer.getId());
-        paymentFlowable.subscribeOn(Schedulers.io())
+        paymentFlowable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(payments -> {
                     if (payments.size() > 0) {

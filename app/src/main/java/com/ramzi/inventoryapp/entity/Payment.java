@@ -5,6 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nicolkill.superrecyclerview.annotations.BindField;
 import com.nicolkill.superrecyclerview.annotations.LayoutResource;
 import com.ramzi.inventoryapp.R;
@@ -57,17 +58,19 @@ public class Payment {
         this.date = date;
     }
 
-
+    @JsonIgnore
     @BindField(id = R.id.pID)
     public String i() {
         return id + "";
     }
 
+    @JsonIgnore
     @BindField(id = R.id.pAmount)
     public String money() {
         return amount + " $";
     }
 
+    @JsonIgnore
     @BindField(id = R.id.pDueDate)
     public String date() {
         return date.toString();

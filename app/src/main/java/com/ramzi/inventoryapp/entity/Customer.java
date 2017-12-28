@@ -31,6 +31,7 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
+
     @BindField(id = R.id.cName)
     public String getName() {
         return name;

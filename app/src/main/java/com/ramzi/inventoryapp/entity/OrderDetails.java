@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nicolkill.superrecyclerview.annotations.BindField;
 import com.nicolkill.superrecyclerview.annotations.LayoutResource;
 import com.ramzi.inventoryapp.R;
@@ -25,20 +26,21 @@ public class OrderDetails implements Serializable {
     private int finalPrice;
     private int quantity;
 
+    @JsonIgnore
     @BindField(id = R.id.pName)
-    public String getProductName() {
+    public String getPN() {
         return "ID: " + productID;
     }
 
-
+    @JsonIgnore
     @BindField(id = R.id.pPrice)
-    public String getPrice() {
+    public String getP() {
         return finalPrice + " $";
     }
 
-
+    @JsonIgnore
     @BindField(id = R.id.pUnit)
-    public String getUnits() {
+    public String getU() {
         return quantity + " unit";
     }
 

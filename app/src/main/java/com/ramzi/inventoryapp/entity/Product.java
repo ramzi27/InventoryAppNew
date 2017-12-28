@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nicolkill.superrecyclerview.annotations.BindField;
 import com.nicolkill.superrecyclerview.annotations.LayoutResource;
 import com.ramzi.inventoryapp.R;
@@ -65,13 +66,15 @@ public class Product {
         Quantity = quantity;
     }
 
+    @JsonIgnore
     @BindField(id = R.id.pPrice)
-    public String getPrices() {
+    public String getPric() {
         return price + " $";
     }
 
+    @JsonIgnore
     @BindField(id = R.id.pUnit)
-    public String getUnits() {
+    public String getUni() {
         return unit + " unit";
     }
 
