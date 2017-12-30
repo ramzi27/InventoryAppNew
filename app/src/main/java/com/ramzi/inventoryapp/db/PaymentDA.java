@@ -13,7 +13,6 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 /**
- * Created by Ramzi on 28-Nov-17.
  */
 @Dao
 public interface PaymentDA {

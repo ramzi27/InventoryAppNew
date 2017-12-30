@@ -26,7 +26,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by user on 12/20/2017.
  */
 
 public class AddOrderDetailsActivity extends AppCompatActivity implements ProductDialog.OnProductSelected {

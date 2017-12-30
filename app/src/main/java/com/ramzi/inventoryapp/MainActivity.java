@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import com.ramzi.inventoryapp.backup.BackupFragment;
 import com.ramzi.inventoryapp.backup.RestoreFragment;
 import com.ramzi.inventoryapp.customerUi.CustomerFragment;
-import com.ramzi.inventoryapp.paymentUi.PaymentFragment;
 import com.ramzi.inventoryapp.productUi.ProductFragment;
 import com.ramzi.inventoryapp.util.Extras;
 
@@ -80,7 +79,11 @@ public class MainActivity extends AppCompatActivity
                 changeView(new RestoreFragment());
                 break;
             case R.id.nav_payment:
-                changeView(new PaymentFragment());
+                CustomerFragment customerFragment1 = new CustomerFragment();
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(Extras.mode, Extras.addPayment);
+                customerFragment1.setArguments(bundle1);
+                changeView(customerFragment1);
                 break;
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

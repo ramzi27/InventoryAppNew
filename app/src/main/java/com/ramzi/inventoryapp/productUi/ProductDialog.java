@@ -14,7 +14,6 @@ import com.ramzi.inventoryapp.entity.Product;
 import com.ramzi.inventoryapp.util.Extras;
 
 /**
- * Created by user on 12/24/2017.
  */
 
 public class ProductDialog extends DialogFragment implements ProductFragment.OnProductSelected {

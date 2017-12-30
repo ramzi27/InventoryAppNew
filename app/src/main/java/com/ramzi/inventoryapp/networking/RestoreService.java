@@ -12,9 +12,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 
-/**
- * Created by user on 12/27/2017.
- */
+/***/
 
 public interface RestoreService {
     @Headers("Content-Type: application/json")

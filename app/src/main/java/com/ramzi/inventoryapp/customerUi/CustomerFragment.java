@@ -82,7 +82,7 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         mode=getArguments().getString(Extras.mode);
         if(mode!=null &&mode.matches(Extras.showCustomers))
         getActivity().setTitle("Customers");
-        if(mode!=null && mode.matches(Extras.selectCustomer)) {
+        if (mode != null && mode.matches(Extras.addPayment)) {
             getActivity().setTitle("Select Customer");
         }
 
@@ -98,7 +98,6 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
         list.addItemDecoration(dividerItemDecoration);
         superRecyclerAdapter = new SuperRecyclerAdapter(list);
-        superRecyclerAdapter.setOnClickListener((view, position, element) -> {
 
             superRecyclerAdapter.setOnClickListener((view1, position1, element1) -> {
                 if (mode.matches(Extras.addPayment)) {
@@ -109,8 +108,6 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
                     startActivity(intent);
                 }
             });
-
-        });
         superRecyclerAdapter.setOnLongClickListener((view, position, element) -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), view);
             popupMenu.inflate(R.menu.customer_menu);
@@ -235,9 +232,5 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         no.setVisibility(View.INVISIBLE);
         list.setVisibility(View.VISIBLE);
         return false;
-    }
-
-    public interface OnCustomerSelect {
-        void onSelect(Customer c);
     }
 }

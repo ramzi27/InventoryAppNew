@@ -12,7 +12,6 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 /**
- * Created by user on 12/12/2017.
  */
 @Dao
 public interface OrderDA {

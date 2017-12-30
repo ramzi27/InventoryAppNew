@@ -15,7 +15,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**
- * Created by user on 12/24/2017.
  */
 
 public interface BackupService {

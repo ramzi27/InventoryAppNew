@@ -5,7 +5,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
- * Created by user on 12/24/2017.
  */
 
 public class RetrofitIntance {

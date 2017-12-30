@@ -11,7 +11,6 @@ import com.ramzi.inventoryapp.entity.Payment;
 import com.ramzi.inventoryapp.entity.Product;
 
 /**
- * Created by Ramzi on 28-Nov-17.
  */
 
 @Database(exportSchema = false, version = 2, entities = {Customer.class, Payment.class, Product.class, Order.class, OrderDetails.class})
