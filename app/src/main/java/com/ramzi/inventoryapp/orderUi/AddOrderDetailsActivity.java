@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -47,6 +49,8 @@ public class AddOrderDetailsActivity extends AppCompatActivity implements Produc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_order_details);
         ButterKnife.bind(this);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+        floatingActionButton.startAnimation(animation);
         setTitle("Add Order Details");
         if (getIntent().getExtras() != null) {
             order = (Order) getIntent().getExtras().getSerializable(Extras.order);

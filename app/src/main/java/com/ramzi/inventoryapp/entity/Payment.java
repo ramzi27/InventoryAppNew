@@ -16,7 +16,7 @@ import java.util.Date;
  * Created by Ramzi on 28-Nov-17.
  */
 @LayoutResource(value = R.layout.payment_frame)
-@Entity(tableName = "payment", foreignKeys = {@ForeignKey(entity = Customer.class, parentColumns = "id", childColumns = "customerId")})
+@Entity(tableName = "payment", foreignKeys = {@ForeignKey(entity = Customer.class, parentColumns = "id", childColumns = "customerId", onDelete = ForeignKey.CASCADE)})
 public class Payment {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "payId")

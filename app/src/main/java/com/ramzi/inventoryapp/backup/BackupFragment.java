@@ -102,7 +102,6 @@ public class BackupFragment extends Fragment {
                     }, throwable -> Utils.showToast(getContext(), "can't backup"));
                     progressContainer.setVisibility(View.INVISIBLE);
                     dataBaseResult.setText("Done");
-
                 });
 
     }

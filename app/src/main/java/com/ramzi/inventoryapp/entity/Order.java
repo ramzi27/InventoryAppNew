@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * Created by user on 12/12/2017.
  */
-@Entity(tableName = "orderTable", foreignKeys = {@ForeignKey(entity = Customer.class, parentColumns = "id", childColumns = "customerId")})
+@Entity(tableName = "orderTable", foreignKeys = {@ForeignKey(entity = Customer.class, parentColumns = "id", childColumns = "customerId", onDelete = ForeignKey.CASCADE)})
 @LayoutResource(R.layout.order_frame)
 public class Order implements Serializable {
     @PrimaryKey(autoGenerate = true)

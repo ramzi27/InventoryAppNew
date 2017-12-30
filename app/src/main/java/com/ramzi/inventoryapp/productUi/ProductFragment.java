@@ -18,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -79,6 +81,8 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in);
+        button.startAnimation(animation);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setEnabled(true);
         refreshLayout.setColorSchemeResources(R.color.refresh_toolbar_color,R.color.refresh_color);
@@ -142,7 +146,7 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (mode.matches(Extras.showCustomers)) {
+        if (mode.matches(Extras.showProducts)) {
             inflater.inflate(R.menu.search_menu, menu);
             SearchView searchView = (SearchView) menu.getItem(1).getActionView();
             searchView.setQueryHint("search product");
@@ -162,21 +166,6 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onQueryTextSubmit(String s) {
-//        Flowable<List<Product>> listFlowable = DB.getDB(getContext()).getProductDA().selectProduct(s);
-//        listFlowable.subscribeOn(Schedulers.computation())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(products1 -> {
-//                    if (products1.size() > 0) {
-//                        products.clear();
-//                        products.addAll(products1);
-//                        productSuperRecyclerAdapter.setElements(products);
-//                        productSuperRecyclerAdapter.notifyDataSetChanged();
-//                    } else {
-//                        list.setVisibility(View.INVISIBLE);
-//                        no.setVisibility(View.VISIBLE);
-//                    }
-//                });
-//        return true;
         List<Product>searchedList=products.stream().filter(product -> product.getName().matches(s)).collect(Collectors.toList());
         if (searchedList.size()>0) {
             no.setVisibility(View.INVISIBLE);

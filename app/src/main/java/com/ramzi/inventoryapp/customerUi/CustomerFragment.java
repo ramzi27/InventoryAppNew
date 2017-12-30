@@ -20,6 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -76,6 +78,8 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in);
+        button.startAnimation(animation);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setEnabled(true);
         refreshLayout.setColorSchemeResources(R.color.refresh_toolbar_color,R.color.refresh_color);
@@ -175,6 +179,8 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_menu, menu);
         SearchView searchView = (SearchView) menu.getItem(1).getActionView();
+//        Animation animation= AnimationUtils.loadAnimation(getContext(),R.anim.zoom_in);
+//        searchView.startAnimation(animation);
         searchView.setQueryHint("search customers");
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);

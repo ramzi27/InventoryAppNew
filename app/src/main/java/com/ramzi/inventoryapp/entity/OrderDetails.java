@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 /**
  */
-@Entity(tableName = "orderDetails", foreignKeys = {@ForeignKey(entity = Order.class, parentColumns = "orderId", childColumns = "orderID"),
+@Entity(tableName = "orderDetails", foreignKeys = {@ForeignKey(entity = Order.class, parentColumns = "orderId", childColumns = "orderID", onDelete = ForeignKey.CASCADE),
         @ForeignKey(entity = Product.class, parentColumns = "productId", childColumns = "productID")
 })
 @LayoutResource(R.layout.product_frame)
