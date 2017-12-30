@@ -23,7 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by user on 12/24/2017.
  */
 
 public class BackupFragment extends Fragment {

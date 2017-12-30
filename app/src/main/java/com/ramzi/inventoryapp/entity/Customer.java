@@ -11,7 +11,7 @@ import com.ramzi.inventoryapp.R;
 import java.io.Serializable;
 
 /**
- * Created by Ramzi on 24-Nov-17.
+ Ramzi on 24-Nov-17.
  */
 
 @Entity(tableName = "customer")

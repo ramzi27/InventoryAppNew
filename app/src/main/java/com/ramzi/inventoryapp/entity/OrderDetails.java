@@ -12,7 +12,6 @@ import com.ramzi.inventoryapp.R;
 import java.io.Serializable;
 
 /**
- * Created by user on 12/20/2017.
  */
 @Entity(tableName = "orderDetails", foreignKeys = {@ForeignKey(entity = Order.class, parentColumns = "orderId", childColumns = "orderID"),
         @ForeignKey(entity = Product.class, parentColumns = "productId", childColumns = "productID")

@@ -12,7 +12,6 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 /**
- * Created by Ramzi on 01-Dec-17.
  */
 @Dao
 public interface ProductDA {

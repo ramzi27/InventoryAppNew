@@ -12,7 +12,6 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 /**
- * Created by user on 12/20/2017.
  */
 
 @Dao

@@ -21,7 +21,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by user on 12/27/2017.
  */
 
 public class RestoreFragment extends android.support.v4.app.Fragment {

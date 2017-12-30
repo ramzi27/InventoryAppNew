@@ -1,7 +1,7 @@
 package com.ramzi.inventoryapp.util;
 
 /**
- * Created by Ramzi on 24-Nov-17.
+
  */
 
 public final class Extras {
