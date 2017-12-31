@@ -68,13 +68,13 @@ public class Product {
 
     @JsonIgnore
     @BindField(id = R.id.pPrice)
-    public String getPric() {
+    public String Pric() {
         return price + " $";
     }
 
     @JsonIgnore
     @BindField(id = R.id.pUnit)
-    public String getUni() {
+    public String Uni() {
         return unit + " unit";
     }
 

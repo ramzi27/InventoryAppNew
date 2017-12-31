@@ -1,6 +1,11 @@
 package com.ramzi.inventoryapp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,16 +20,26 @@ import android.view.MenuItem;
 import com.ramzi.inventoryapp.backup.BackupFragment;
 import com.ramzi.inventoryapp.backup.RestoreFragment;
 import com.ramzi.inventoryapp.customerUi.CustomerFragment;
+import com.ramzi.inventoryapp.paymentUi.NotificationReciever;
 import com.ramzi.inventoryapp.productUi.ProductFragment;
 import com.ramzi.inventoryapp.util.Extras;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private NavigationView navigationView;
+    private long timeInMillis = 5000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent alarm = new Intent(this, NotificationReciever.class);
+        boolean alarmRunning = (PendingIntent.getBroadcast(this, 0, alarm, PendingIntent.FLAG_NO_CREATE) != null);
+        if (!alarmRunning) {
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarm, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), timeInMillis, pendingIntent);
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

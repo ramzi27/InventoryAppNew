@@ -50,6 +50,17 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <service
+            android:name=".paymentUi.NotificationService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <receiver
+            android:name=".paymentUi.NotificationReciever"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.ramzi.inventoryapp.paymentUi;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,6 +11,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.nicolkill.superrecyclerview.SuperRecyclerAdapter;
@@ -26,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class PaymentActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -40,7 +44,7 @@ public class PaymentActivity extends AppCompatActivity implements SwipeRefreshLa
     private SuperRecyclerAdapter<Payment> superRecyclerAdapter;
     private ArrayList<Payment> payments = new ArrayList<>();
     private Customer customer;
-
+    private Disposable disposable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,19 +60,37 @@ public class PaymentActivity extends AppCompatActivity implements SwipeRefreshLa
         setSupportActionBar(toolbar);
         setTitle(customer.getName() + " payments");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+        button.startAnimation(animation);
+        button.setOnClickListener(view -> {
+            PayDialog payDialog = new PayDialog();
+            payDialog.show(getSupportFragmentManager(), "h");
 
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         list.setLayoutManager(layoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
         list.addItemDecoration(dividerItemDecoration);
         superRecyclerAdapter = new SuperRecyclerAdapter(list);
+        superRecyclerAdapter.setOnLongClickListener((view, position, element) -> {
+            buildDialog(element);
+        });
         getPaymentsFromDB();
+    }
+
+    private void buildDialog(Payment element) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Payment")
+                .setMessage("Do You Want To Delete Payment ?")
+                .setPositiveButton("Yes", (dialogInterface, i) -> DB.getDB(this).getPaymentDA().delete(element))
+                .setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel())
+                .show();
     }
 
     private void getPaymentsFromDB() {
         Flowable<List<Payment>> paymentFlowable = DB.getDB(this).getPaymentDA().getCustomerPayments(customer.getId());
-        paymentFlowable.subscribeOn(Schedulers.computation())
+        disposable = paymentFlowable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(payments -> {
                     if (payments.size() > 0) {
@@ -90,5 +112,12 @@ public class PaymentActivity extends AppCompatActivity implements SwipeRefreshLa
     public void onRefresh() {
         superRecyclerAdapter.clearData();
         getPaymentsFromDB();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null)
+            disposable.dispose();
     }
 }

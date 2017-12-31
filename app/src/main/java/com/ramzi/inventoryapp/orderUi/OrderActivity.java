@@ -37,6 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -54,6 +55,7 @@ public class OrderActivity extends AppCompatActivity implements DatePickerDialog
     private ArrayList<Order> orders=new ArrayList<>();
     private Customer customer;
     private Date date;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,7 +127,7 @@ public class OrderActivity extends AppCompatActivity implements DatePickerDialog
 
     public void getOrders() {
         Flowable<List<Order>> orderFlowable= DB.getDB(this).getOrderDA().getCustomerOrders(customer.getId());
-        orderFlowable.subscribeOn(Schedulers.io())
+        disposable = orderFlowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(orders1 -> {
                     if (orders1.size() > 0) {
@@ -175,5 +177,13 @@ public class OrderActivity extends AppCompatActivity implements DatePickerDialog
         else if (item.getItemId() == android.R.id.home)
             onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 }

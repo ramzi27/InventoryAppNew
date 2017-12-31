@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class OrderDetailsActivity extends AppCompatActivity {
@@ -43,6 +44,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private ArrayList<OrderDetails> orderDetails = new ArrayList<>();
     private Customer customer;
     private Order order;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     }
 
     private void getOrderDetails() {
-        DB.getDB(this).getOrderDetailsDA().getOrderDetailsByOrder(order.getOrderId())
+        disposable = DB.getDB(this).getOrderDetailsDA().getOrderDetailsByOrder(order.getOrderId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(orderDetails -> {
@@ -130,5 +132,12 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null)
+            disposable.dispose();
     }
 }

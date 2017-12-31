@@ -38,6 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -54,7 +55,7 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.productTitle)
     TextView productTitle;
-
+    private Disposable disposable;
     private SuperRecyclerAdapter<Product> productSuperRecyclerAdapter;
     private ArrayList<Product> products = new ArrayList<>();
     private String mode;
@@ -125,7 +126,7 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
 
     private void getProducts() {
         Flowable<List<Product>> listFlowable = DB.getDB(getContext()).getProductDA().getAllProducts();
-        listFlowable.subscribeOn(Schedulers.io())
+        disposable = listFlowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(products1 -> {
                     if (products1.size() > 0) {
@@ -192,6 +193,13 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
         no.setVisibility(View.INVISIBLE);
         list.setVisibility(View.VISIBLE);
         return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null)
+            disposable.dispose();
     }
 
     public interface OnProductSelected {

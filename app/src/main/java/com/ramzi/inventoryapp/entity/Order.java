@@ -15,6 +15,7 @@ import java.util.Date;
 /**
  * Created by user on 12/12/2017.
  */
+
 @Entity(tableName = "orderTable", foreignKeys = {@ForeignKey(entity = Customer.class, parentColumns = "id", childColumns = "customerId", onDelete = ForeignKey.CASCADE)})
 @LayoutResource(R.layout.order_frame)
 public class Order implements Serializable {
@@ -42,7 +43,9 @@ public class Order implements Serializable {
 
     @JsonIgnore
     @BindField(id=R.id.oId)
-    public String getID(){return orderId+"";}
+    public String D() {
+        return orderId + "";
+    }
 
     public int getOrderId() {
         return orderId;
@@ -54,7 +57,7 @@ public class Order implements Serializable {
 
     @JsonIgnore
     @BindField(id=R.id.oDate)
-    public String getMyDate() {
+    public String Date() {
         return dueDate.toString();
     }
 

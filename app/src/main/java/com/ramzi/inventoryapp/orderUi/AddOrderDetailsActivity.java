@@ -25,6 +25,7 @@ import com.ramzi.inventoryapp.util.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -42,7 +43,7 @@ public class AddOrderDetailsActivity extends AppCompatActivity implements Produc
     private Order order;
     private Product product;
     private ProductDialog productDialog;
-
+    private Disposable disposable;
     //takes bundle of order
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class AddOrderDetailsActivity extends AppCompatActivity implements Produc
             quantity.setText("");
             proId.setText("");
             //update total price
-            DB.getDB(this).getOrderDetailsDA().getOrderDetailsByOrder(order.getOrderId())
+            disposable = DB.getDB(this).getOrderDetailsDA().getOrderDetailsByOrder(order.getOrderId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(orderDetails1 -> {
@@ -122,5 +123,12 @@ public class AddOrderDetailsActivity extends AppCompatActivity implements Produc
         productDialog.getDialog().cancel();
         proId.setText(product.getName());
         finalPrice.setText(product.getPrice() + "");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null)
+            disposable.dispose();
     }
 }

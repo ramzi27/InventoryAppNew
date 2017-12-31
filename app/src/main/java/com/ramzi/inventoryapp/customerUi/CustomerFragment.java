@@ -42,6 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -59,6 +60,7 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
     private SuperRecyclerAdapter<Customer> superRecyclerAdapter;
     private ArrayList<Customer> customers = new ArrayList<>();
     private String mode;
+    private Disposable disposable;
 
     @Override
     public void onRefresh() {
@@ -151,7 +153,7 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
 
     private void getCustomers() {
         Flowable<List<Customer>> customerFlowable = DB.getDB(getContext()).getCustomerDA().getAllCustomer();
-        customerFlowable.subscribeOn(Schedulers.io())
+        disposable = customerFlowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(customers1 -> {
                     if (customers1.size() > 0) {
@@ -238,5 +240,12 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         no.setVisibility(View.INVISIBLE);
         list.setVisibility(View.VISIBLE);
         return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null)
+            disposable.dispose();
     }
 }

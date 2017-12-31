@@ -29,8 +29,8 @@ public interface CustomerDA {
     @Query("delete from customer")
     void deleteTable();
 
-    @Query("select * from customer where name=:s")
-    Flowable<List<Customer>> selectCustomer(String s);
+    @Query("select * from customer where id=:i")
+    Customer selectCustomer(int i);
 
     @Insert
     void saveAll(List<Customer> customers);

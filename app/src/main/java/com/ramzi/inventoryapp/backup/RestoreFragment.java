@@ -18,6 +18,7 @@ import com.ramzi.inventoryapp.util.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -35,6 +36,7 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
     @BindView(R.id.databaseResult)
     TextView dataBaseResult;
 
+    private Disposable d1, d2, d3, d4, d5;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,52 +56,57 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
 
     private void backUp() {
         final int[] x = new int[5];
-        getContext().deleteDatabase("myDataBase");
+//        getContext().deleteDatabase("myDataBase");
+//        getContext().openOrCreateDatabase("myDataBase", Context.MODE_PRIVATE,null,null);
         progressContainer.setVisibility(View.VISIBLE);
-        RestService.getRestoreService().restoreCustomers().subscribeOn(Schedulers.io())
+        d1 = RestService.getRestoreService().restoreCustomers().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(customers -> {
-//                    DB.getDB(getContext()).getCustomerDA().deleteTable();
+                    DB.getDB(getContext()).getCustomerDA().deleteTable();
                     DB.getDB(getContext()).getCustomerDA().saveAll(customers);
                     x[0] = customers.size();
                 }, throwable -> {
+                    throwable.printStackTrace();
                     Utils.showToast(getContext(), "can't restore");
                 });
 
-        RestService.getRestoreService().restoreProducts().subscribeOn(Schedulers.io())
+        d2 = RestService.getRestoreService().restoreProducts().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(products -> {
-//                    DB.getDB(getContext()).getProductDA().deleteTable();
+                    DB.getDB(getContext()).getProductDA().deleteTable();
                     DB.getDB(getContext()).getProductDA().saveAll(products);
                     x[1] = products.size();
                 }, throwable -> {
+                    throwable.printStackTrace();
                     Utils.showToast(getContext(), "can't restore");
                 });
 
-        RestService.getRestoreService().restoreOrders().subscribeOn(Schedulers.io())
+        d3 = RestService.getRestoreService().restoreOrders().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(orders -> {
-//                    DB.getDB(getContext()).getOrderDA().deleteTable();
+                    DB.getDB(getContext()).getOrderDA().deleteTable();
                     DB.getDB(getContext()).getOrderDA().saveAll(orders);
                     x[2] = orders.size();
                 }, throwable -> {
+                    throwable.printStackTrace();
                     Utils.showToast(getContext(), "can't restore");
                 });
 
-        RestService.getRestoreService().restoreOrderDetails().subscribeOn(Schedulers.io())
+        d4 = RestService.getRestoreService().restoreOrderDetails().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(orderDetails -> {
-//                    DB.getDB(getContext()).getOrderDetailsDA().deleteTable();
+                    DB.getDB(getContext()).getOrderDetailsDA().deleteTable();
                     DB.getDB(getContext()).getOrderDetailsDA().saveAll(orderDetails);
                     x[3] = orderDetails.size();
                 }, throwable -> {
+                    throwable.printStackTrace();
                     Utils.showToast(getContext(), "can't restore");
                 });
 
-        RestService.getRestoreService().restorePayments().subscribeOn(Schedulers.io())
+        d5 = RestService.getRestoreService().restorePayments().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(payments -> {
-//                    DB.getDB(getContext()).getPaymentDA().deleteTable();
+                    DB.getDB(getContext()).getPaymentDA().deleteTable();
                     DB.getDB(getContext()).getPaymentDA().saveAll(payments);
                     x[4] = payments.size();
                     backProgress.setVisibility(View.INVISIBLE);
@@ -110,9 +117,22 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
                             "restored payment: " + x[4];
                     backResult.setText(s);
                 }, throwable -> {
+                    throwable.printStackTrace();
                     Utils.showToast(getContext(), "can't restore");
                 });
 
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (d1 != null && d2 != null && d3 != null && d4 != null && d5 != null) {
+            d1.dispose();
+            d2.dispose();
+            d3.dispose();
+            d4.dispose();
+            d5.dispose();
+        }
     }
 }

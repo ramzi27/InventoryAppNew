@@ -27,19 +27,19 @@ public class OrderDetails implements Serializable {
 
     @JsonIgnore
     @BindField(id = R.id.pName)
-    public String getPN() {
+    public String PN() {
         return "ID: " + productID;
     }
 
     @JsonIgnore
     @BindField(id = R.id.pPrice)
-    public String getP() {
+    public String P() {
         return finalPrice + " $";
     }
 
     @JsonIgnore
     @BindField(id = R.id.pUnit)
-    public String getU() {
+    public String U() {
         return quantity + " unit";
     }
 

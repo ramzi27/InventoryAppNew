@@ -3,7 +3,6 @@ package com.ramzi.inventoryapp.backup;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.ramzi.inventoryapp.util.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -37,12 +37,26 @@ public class BackupFragment extends Fragment {
     @BindView(R.id.databaseResult)
     TextView dataBaseResult;
 
+    private Disposable d1, d2, d3, d4, d5;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View view=inflater.inflate(R.layout.backup_layout,container,false);
        ButterKnife.bind(this,view);
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (d1 != null && d2 != null && d3 != null && d4 != null && d5 != null) {
+            d1.dispose();
+            d2.dispose();
+            d3.dispose();
+            d5.dispose();
+            d4.dispose();
+        }
     }
 
     @Override
@@ -54,7 +68,7 @@ public class BackupFragment extends Fragment {
 
     private void backUp() {
         progressContainer.setVisibility(View.VISIBLE);
-        DB.getDB(getContext()).getCustomerDA().getAllCustomer().subscribeOn(Schedulers.io())
+        d1 = DB.getDB(getContext()).getCustomerDA().getAllCustomer().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(customers -> {
                     RestService.getBackupService().backupCustomers(customers).observeOn(AndroidSchedulers.mainThread())
@@ -62,17 +76,16 @@ public class BackupFragment extends Fragment {
                         Utils.showToast(getContext(), "customer backup success!");
                     }, throwable -> Utils.showToast(getContext(), "can't backup"));
                 });
-        DB.getDB(getContext()).getProductDA().getAllProducts().subscribeOn(Schedulers.io())
+        d2 = DB.getDB(getContext()).getProductDA().getAllProducts().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(products -> {
-                    Log.i(getContext().getPackageName(), products.toString());
                     backResult.setText("backing up products .....");
                     RestService.getBackupService().backupProducts(products).observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
                         Utils.showToast(getContext(), "product backup success!");
                     }, throwable -> Utils.showToast(getContext(), "can't backup"));
                 });
-        DB.getDB(getContext()).getOrderDA().getAllOrders().subscribeOn(Schedulers.io())
+        d3 = DB.getDB(getContext()).getOrderDA().getAllOrders().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(orders -> {
                     backResult.setText("backing up orders .....");
@@ -82,7 +95,7 @@ public class BackupFragment extends Fragment {
 
                     }, throwable -> Utils.showToast(getContext(), "can't backup"));
                 });
-        DB.getDB(getContext()).getOrderDetailsDA().getAllOrderDetails().subscribeOn(Schedulers.io())
+        d4 = DB.getDB(getContext()).getOrderDetailsDA().getAllOrderDetails().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(orderDetails -> {
                     backResult.setText("backing up order details .....");
@@ -92,7 +105,7 @@ public class BackupFragment extends Fragment {
 
                     }, throwable -> Utils.showToast(getContext(), "can't backup"));
                 });
-        DB.getDB(getContext()).getPaymentDA().getAllPayments().subscribeOn(Schedulers.io())
+        d5 = DB.getDB(getContext()).getPaymentDA().getAllPayments().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(payments -> {
                     backResult.setText("backing up payments .....");

@@ -5,18 +5,13 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.ramzi.inventoryapp.entity.Customer;
-import com.ramzi.inventoryapp.networking.RestService;
+import com.google.gson.Gson;
+import com.ramzi.inventoryapp.entity.Order;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-
-import io.reactivex.Maybe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
+import java.util.Date;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -28,24 +23,13 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void s() {
-        Customer customer = new Customer();
-        customer.setPhone("845120");
-        customer.setAddress("ramallah");
-        customer.setName("samuel tannous");
-        Customer customer1 = new Customer();
-        customer1.setPhone("845120");
-        customer1.setAddress("ramallah");
-        customer1.setName("samuel tannous");
         Context c = InstrumentationRegistry.getContext();
-        ArrayList<Customer> customers = new ArrayList<>();
-        customers.add(customer);
-        customers.add(customer1);
-        Maybe<ResponseBody> responseBodyMaybe = RestService.getBackupService().backupCustomers(customers);
-        responseBodyMaybe.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(responseBody -> {
-                    Log.i(c.getPackageName(), responseBody.string());
-                });
+        Order order = new Order();
+        order.setCustomerId(5842);
+        order.setDate(new Date());
+        order.setDueDate(new Date());
+        Gson gson = new Gson();
+        Log.i(c.getPackageName(), gson.toJson(order));
 
     }
 }
