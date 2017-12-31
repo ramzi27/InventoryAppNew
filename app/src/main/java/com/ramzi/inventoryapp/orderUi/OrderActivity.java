@@ -83,11 +83,18 @@ public class OrderActivity extends AppCompatActivity implements DatePickerDialog
         superRecyclerAdapter = new SuperRecyclerAdapter(list);
         superRecyclerAdapter.setOnLongClickListener((view, position, element) -> {
             PopupMenu popupMenu = new PopupMenu(this, view);
-            popupMenu.inflate(R.menu.delete_menu);
+            popupMenu.inflate(R.menu.orders_menu);
             popupMenu.show();
             popupMenu.setOnMenuItemClickListener(menuItem -> {
-                if (menuItem.getItemId() == R.id.delete)
+                if (menuItem.getItemId() == R.id.deleteO)
                     deleteOrder(element);
+                else if (menuItem.getItemId() == R.id.switchOrder) {
+                    SwitchDialog switchDialog = new SwitchDialog();
+                    Bundle bundleq = new Bundle();
+                    bundleq.putSerializable(Extras.order, element);
+                    switchDialog.setArguments(bundleq);
+                    switchDialog.show(getSupportFragmentManager(), "k");
+                }
                 return true;
             });
         });

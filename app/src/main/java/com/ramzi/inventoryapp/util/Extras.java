@@ -8,7 +8,7 @@ public final class Extras {
     public static final String customer = "myCostumer";
     public static final String order = "myOrder";
     public static final String product = "myProduct";
-
+    public static final String changeOrder = "changeOrder";
     public static final String payment = "myPayment";
     public static final String mode = "myMode";
     public static final String addProduct = "addProduct";

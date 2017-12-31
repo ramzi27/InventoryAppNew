@@ -34,4 +34,7 @@ public interface OrderDA {
     @Insert
     void saveAll(List<Order> orders);
 
+    @Query("update orderTable set customerId=:id where orderId=:O")
+    void switchOrders(int id, int O);
+
 }

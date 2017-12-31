@@ -29,6 +29,7 @@ import com.nicolkill.superrecyclerview.SuperRecyclerAdapter;
 import com.ramzi.inventoryapp.R;
 import com.ramzi.inventoryapp.db.DB;
 import com.ramzi.inventoryapp.entity.Customer;
+import com.ramzi.inventoryapp.entity.Order;
 import com.ramzi.inventoryapp.orderUi.OrderActivity;
 import com.ramzi.inventoryapp.paymentUi.PaymentActivity;
 import com.ramzi.inventoryapp.util.Extras;
@@ -91,13 +92,15 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
         if (mode != null && mode.matches(Extras.addPayment)) {
             getActivity().setTitle("Select Customer");
         }
+        if (mode != null && mode.matches(Extras.changeOrder))
+            getActivity().setTitle("Switch Orders");
 
         setHasOptionsMenu(true);
         button.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), AddCustomerActivity.class);
             startActivity(intent);
-
         });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         list.setLayoutManager(layoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
@@ -112,6 +115,10 @@ public class CustomerFragment extends Fragment implements SearchView.OnQueryText
                     bundle.putSerializable(Extras.customer, element1);
                     intent.putExtras(bundle);
                     startActivity(intent);
+                } else if (mode.matches(Extras.changeOrder)) {
+                    Order order = (Order) getArguments().getSerializable(Extras.order);
+                    DB.getDB(getContext()).getOrderDA().switchOrders(element1.getId(), order.getOrderId());
+                    Utils.showToast(getContext(), "order switched");
                 }
             });
         superRecyclerAdapter.setOnLongClickListener((view, position, element) -> {
