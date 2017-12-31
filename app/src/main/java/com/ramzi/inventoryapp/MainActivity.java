@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private NavigationView navigationView;
     private long timeInMillis = 5000;
-
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +37,8 @@ public class MainActivity extends AppCompatActivity
         Intent alarm = new Intent(this, NotificationReciever.class);
         boolean alarmRunning = (PendingIntent.getBroadcast(this, 0, alarm, PendingIntent.FLAG_NO_CREATE) != null);
         if (!alarmRunning) {
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarm, 0);
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            pendingIntent = PendingIntent.getBroadcast(this, 0, alarm, 0);
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), timeInMillis, pendingIntent);
         }
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -111,5 +112,12 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (alarmManager != null && pendingIntent != null)
+            alarmManager.cancel(pendingIntent);
     }
 }
