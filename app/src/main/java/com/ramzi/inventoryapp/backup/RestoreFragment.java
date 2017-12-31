@@ -1,11 +1,13 @@
 package com.ramzi.inventoryapp.backup;
 
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,6 +37,8 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
     LinearLayout progressContainer;
     @BindView(R.id.databaseResult)
     TextView dataBaseResult;
+    @BindView(R.id.bImage)
+    ImageView image;
 
     private Disposable d1, d2, d3, d4, d5;
     @Nullable
@@ -116,6 +120,8 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
                             "restored order details: " + x[3] + "\n" +
                             "restored payment: " + x[4];
                     backResult.setText(s);
+                    TransitionDrawable transitionDrawable = (TransitionDrawable) image.getDrawable();
+                    transitionDrawable.startTransition(3000);
                 }, throwable -> {
                     throwable.printStackTrace();
                     Utils.showToast(getContext(), "can't restore");

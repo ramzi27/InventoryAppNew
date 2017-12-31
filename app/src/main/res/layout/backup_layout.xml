@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <Button
@@ -20,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="240dp"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="invisible">
@@ -37,7 +38,10 @@
             android:id="@+id/backResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <TextView
@@ -47,5 +51,14 @@
         android:layout_below="@+id/progressContainer"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="54dp" />
+
+    <ImageView
+        android:id="@+id/bImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        app:srcCompat="@drawable/trans" />
 
 </RelativeLayout>

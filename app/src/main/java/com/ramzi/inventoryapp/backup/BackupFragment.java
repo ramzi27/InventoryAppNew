@@ -1,5 +1,6 @@
 package com.ramzi.inventoryapp.backup;
 
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,6 +38,8 @@ public class BackupFragment extends Fragment {
     LinearLayout progressContainer;
     @BindView(R.id.databaseResult)
     TextView dataBaseResult;
+    @BindView(R.id.bImage)
+    ImageView image;
 
     private Disposable d1, d2, d3, d4, d5;
 
@@ -115,6 +119,8 @@ public class BackupFragment extends Fragment {
                     }, throwable -> Utils.showToast(getContext(), "can't backup"));
                     progressContainer.setVisibility(View.INVISIBLE);
                     dataBaseResult.setText("Done");
+                    TransitionDrawable transitionDrawable = (TransitionDrawable) image.getDrawable();
+                    transitionDrawable.startTransition(3000);
                 });
 
     }
