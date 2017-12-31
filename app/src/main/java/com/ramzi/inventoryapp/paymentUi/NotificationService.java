@@ -1,12 +1,9 @@
 package com.ramzi.inventoryapp.paymentUi;
 
-import android.annotation.TargetApi;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -82,17 +79,16 @@ public class NotificationService extends Service {
 
         }
 
-        @TargetApi(Build.VERSION_CODES.O)
         private void showNotification(Payment p) {
             Customer customer = DB.getDB(this.c).getCustomerDA().selectCustomer(p.getCustomerId());
 
             String CHANNEL_ID = "myChannel";
             Log.i(c.getPackageName(), "notify");
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager notificationManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
+//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+//                    "Channel human readable title",
+//                    NotificationManager.IMPORTANCE_DEFAULT);
+//            NotificationManager notificationManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+//            notificationManager.createNotificationChannel(channel);
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(c, CHANNEL_ID)
                             .setSmallIcon(R.drawable.ic_notify)
