@@ -24,19 +24,37 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * The type Restore fragment.
  */
-
 public class RestoreFragment extends android.support.v4.app.Fragment {
+    /**
+     * The Back up.
+     */
     @BindView(R.id.backUp)
     Button backUp;
+    /**
+     * The Back result.
+     */
     @BindView(R.id.backResult)
     TextView backResult;
+    /**
+     * The Back progress.
+     */
     @BindView(R.id.backupProgress)
     ProgressBar backProgress;
+    /**
+     * The Progress container.
+     */
     @BindView(R.id.progressContainer)
     LinearLayout progressContainer;
+    /**
+     * The Data base result.
+     */
     @BindView(R.id.databaseResult)
     TextView dataBaseResult;
+    /**
+     * The Image.
+     */
     @BindView(R.id.bImage)
     ImageView image;
 
@@ -59,6 +77,10 @@ public class RestoreFragment extends android.support.v4.app.Fragment {
     }
 
     private void backUp() {
+//        if(!Utils.checkWifi(getContext())){
+//            Utils.showSnackbar(backProgress,"Check Internet Connection");
+//            return;
+//        }
         final int[] x = new int[5];
 //        getContext().deleteDatabase("myDataBase");
 //        getContext().openOrCreateDatabase("myDataBase", Context.MODE_PRIVATE,null,null);

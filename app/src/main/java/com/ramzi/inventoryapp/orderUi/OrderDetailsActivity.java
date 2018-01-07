@@ -33,11 +33,23 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * The type Order details activity.
+ */
 public class OrderDetailsActivity extends AppCompatActivity {
+    /**
+     * The List.
+     */
     @BindView(R.id.list)
     RecyclerView list;
+    /**
+     * The No.
+     */
     @BindView(R.id.noContent)
     TextView no;
+    /**
+     * The Floating action button.
+     */
     @BindView(R.id.add)
     FloatingActionButton floatingActionButton;
     private SuperRecyclerAdapter<OrderDetails> superRecyclerAdapter;

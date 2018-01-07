@@ -35,6 +35,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private NavigationView navigationView;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     private Disposable d;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

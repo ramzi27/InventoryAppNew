@@ -29,15 +29,27 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * The type Add order details activity.
  */
-
 public class AddOrderDetailsActivity extends AppCompatActivity implements ProductDialog.OnProductSelected {
+    /**
+     * The Pro id.
+     */
     @BindView(R.id.proName)
     TextView proId;
+    /**
+     * The Final price.
+     */
     @BindView(R.id.finalPrice)
     TextView finalPrice;
+    /**
+     * The Quantity.
+     */
     @BindView(R.id.quantity)
     EditText quantity;
+    /**
+     * The Floating action button.
+     */
     @BindView(R.id.addProduct)
     FloatingActionButton floatingActionButton;
     private Order order;

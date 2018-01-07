@@ -20,10 +20,15 @@ import butterknife.ButterKnife;
 /**
  * Created by user on 12/31/2017.
  */
-
 public class PayDialog extends DialogFragment {
+    /**
+     * The Date picker.
+     */
     @BindView(R.id.datePicker)
     DatePicker datePicker;
+    /**
+     * The Amount.
+     */
     @BindView(R.id.amount)
     EditText amount;
     private Payment payment;

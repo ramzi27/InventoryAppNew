@@ -26,50 +26,105 @@ public class Payment {
     private int customerId;
     private Date date;
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Gets amount.
+     *
+     * @return the amount
+     */
     public long getAmount() {
         return amount;
     }
 
+    /**
+     * Sets amount.
+     *
+     * @param amount the amount
+     */
     public void setAmount(long amount) {
         this.amount = amount;
     }
 
+    /**
+     * Gets customer id.
+     *
+     * @return the customer id
+     */
     public int getCustomerId() {
         return customerId;
     }
 
+    /**
+     * Sets customer id.
+     *
+     * @param customerId the customer id
+     */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
+    /**
+     * Gets date.
+     *
+     * @return the date
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Sets date.
+     *
+     * @param date the date
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     * string.
+     *
+     * @return the string
+     */
     @JsonIgnore
     @BindField(id = R.id.pID)
     public String i() {
         return id + "";
     }
 
+    /**
+     * Money string.
+     *
+     * @return the string
+     */
     @JsonIgnore
     @BindField(id = R.id.pAmount)
     public String money() {
         return amount + " $";
     }
 
+    /**
+     * Date string.
+     *
+     * @return the string
+     */
     @JsonIgnore
     @BindField(id = R.id.pDueDate)
     public String date() {

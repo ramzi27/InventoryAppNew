@@ -42,17 +42,32 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * The type Product fragment.
  */
-
 public class ProductFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener, SwipeRefreshLayout.OnRefreshListener {
+    /**
+     * The Button.
+     */
     @BindView(R.id.add)
     FloatingActionButton button;
+    /**
+     * The List.
+     */
     @BindView(R.id.list)
     RecyclerView list;
+    /**
+     * The No.
+     */
     @BindView(R.id.noContent)
     TextView no;
+    /**
+     * The Refresh layout.
+     */
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
+    /**
+     * The Product title.
+     */
     @BindView(R.id.productTitle)
     TextView productTitle;
     private Disposable disposable;
@@ -67,6 +82,11 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
         getProducts();
     }
 
+    /**
+     * Sets on product selected.
+     *
+     * @param onProductSelected the on product selected
+     */
     public void setOnProductSelected(OnProductSelected onProductSelected) {
         this.onProductSelected = onProductSelected;
     }
@@ -202,7 +222,15 @@ public class ProductFragment extends Fragment implements SearchView.OnQueryTextL
             disposable.dispose();
     }
 
+    /**
+     * The interface On product selected.
+     */
     public interface OnProductSelected {
+        /**
+         * On select.
+         *
+         * @param product the product
+         */
         void onSelect(Product product);
     }
 }

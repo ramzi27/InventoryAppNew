@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+/**
+ * The type Notification reciever.
+ */
 public class NotificationReciever extends BroadcastReceiver {
 
     private Context c;

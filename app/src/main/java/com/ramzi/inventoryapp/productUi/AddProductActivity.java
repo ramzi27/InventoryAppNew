@@ -14,6 +14,9 @@ import com.ramzi.inventoryapp.entity.Product;
 import com.ramzi.inventoryapp.util.Extras;
 import com.ramzi.inventoryapp.util.Utils;
 
+/**
+ * The type Add product activity.
+ */
 public class AddProductActivity extends AppCompatActivity {
 
     private CoordinatorLayout productContainer;

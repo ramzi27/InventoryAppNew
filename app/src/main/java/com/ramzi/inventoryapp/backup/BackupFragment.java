@@ -25,19 +25,37 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * The type Backup fragment.
  */
-
 public class BackupFragment extends Fragment {
+    /**
+     * The Back up.
+     */
     @BindView(R.id.backUp)
     Button backUp;
+    /**
+     * The Back result.
+     */
     @BindView(R.id.backResult)
     TextView backResult;
+    /**
+     * The Back progress.
+     */
     @BindView(R.id.backupProgress)
     ProgressBar backProgress;
+    /**
+     * The Progress container.
+     */
     @BindView(R.id.progressContainer)
     LinearLayout progressContainer;
+    /**
+     * The Data base result.
+     */
     @BindView(R.id.databaseResult)
     TextView dataBaseResult;
+    /**
+     * The Image.
+     */
     @BindView(R.id.bImage)
     ImageView image;
 
@@ -71,6 +89,10 @@ public class BackupFragment extends Fragment {
     }
 
     private void backUp() {
+//        if(!Utils.checkWifi(getContext())) {
+//            Utils.showSnackbar(backResult, "No Internet Connection");
+//            return;
+//        }
         progressContainer.setVisibility(View.VISIBLE);
         d1 = DB.getDB(getContext()).getCustomerDA().getAllCustomer().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -116,11 +138,12 @@ public class BackupFragment extends Fragment {
                     RestService.getBackupService().backupPayments(payments).observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io()).subscribe(responseBody -> {
                         Utils.showToast(getContext(), "payment backup success!");
+                        progressContainer.setVisibility(View.INVISIBLE);
+                        dataBaseResult.setText("Done");
+                        TransitionDrawable transitionDrawable = (TransitionDrawable) image.getDrawable();
+                        transitionDrawable.startTransition(3000);
                     }, throwable -> Utils.showToast(getContext(), "can't backup"));
-                    progressContainer.setVisibility(View.INVISIBLE);
-                    dataBaseResult.setText("Done");
-                    TransitionDrawable transitionDrawable = (TransitionDrawable) image.getDrawable();
-                    transitionDrawable.startTransition(3000);
+
                 });
 
     }

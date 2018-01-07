@@ -19,12 +19,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * The type Notification service.
+ */
 public class NotificationService extends Service {
     private Disposable d;
     private boolean isRunning;
     private Context context;
     private BackgroundThread backgroundThread;
 
+    /**
+     * Instantiates a new Notification service.
+     */
     public NotificationService() {
     }
 
@@ -60,6 +66,11 @@ public class NotificationService extends Service {
     private class BackgroundThread extends Thread {
         private Context c;
 
+        /**
+         * Instantiates a new Background thread.
+         *
+         * @param context the context
+         */
         public BackgroundThread(Context context) {
             c = context;
         }

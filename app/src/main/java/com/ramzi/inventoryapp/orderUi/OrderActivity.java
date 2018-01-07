@@ -41,14 +41,24 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * The type Order activity.
  */
 //show orders for selected customer
     //passed by bundle
 public class OrderActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    /**
+     * The List.
+     */
     @BindView(R.id.list)
     RecyclerView list;
+    /**
+     * The No.
+     */
     @BindView(R.id.noContent)
     TextView no;
+    /**
+     * The Floating action button.
+     */
     @BindView(R.id.add)
     FloatingActionButton floatingActionButton;
     private SuperRecyclerAdapter<Order>superRecyclerAdapter;
@@ -120,6 +130,10 @@ public class OrderActivity extends AppCompatActivity implements DatePickerDialog
                 }).show();
     }
 
+    /**
+     * add order to db
+     */
+
     private void addOrder() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -132,6 +146,9 @@ public class OrderActivity extends AppCompatActivity implements DatePickerDialog
         datePickerDialog.show();
     }
 
+    /**
+     * Gets orders.
+     */
     public void getOrders() {
         Flowable<List<Order>> orderFlowable= DB.getDB(this).getOrderDA().getCustomerOrders(customer.getId());
         disposable = orderFlowable.subscribeOn(Schedulers.io())

@@ -16,7 +16,6 @@ import com.ramzi.inventoryapp.util.Extras;
 /**
  * Created by user on 12/31/2017.
  */
-
 public class SwitchDialog extends DialogFragment {
     @Nullable
     @Override

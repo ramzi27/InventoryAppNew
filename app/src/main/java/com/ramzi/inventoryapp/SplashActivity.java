@@ -11,7 +11,6 @@ import java.util.TimerTask;
 /**
  * Created by Ramzi on 30-Dec-17.
  */
-
 public class SplashActivity extends AppCompatActivity {
     private static long N = 1500;
     private Timer timer;

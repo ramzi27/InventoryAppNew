@@ -14,10 +14,13 @@ import com.ramzi.inventoryapp.entity.Product;
 import com.ramzi.inventoryapp.util.Extras;
 
 /**
+ * The type Product dialog.
  */
-
 public class ProductDialog extends DialogFragment implements ProductFragment.OnProductSelected {
 
+    /**
+     * The On product selected.
+     */
     OnProductSelected onProductSelected;
 
     @Override
@@ -28,6 +31,11 @@ public class ProductDialog extends DialogFragment implements ProductFragment.OnP
         }
     }
 
+    /**
+     * Sets on product selected.
+     *
+     * @param onProductSelected the on product selected
+     */
     public void setOnProductSelected(OnProductSelected onProductSelected) {
         this.onProductSelected = onProductSelected;
     }
@@ -54,6 +62,9 @@ public class ProductDialog extends DialogFragment implements ProductFragment.OnP
             fragmentTransaction.commit();
     }
 
+    /**
+     * The interface On product selected.
+     */
     public interface OnProductSelected extends ProductFragment.OnProductSelected {
     }
 }

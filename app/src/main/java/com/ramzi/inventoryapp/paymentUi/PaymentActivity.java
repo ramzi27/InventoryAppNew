@@ -32,19 +32,35 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * The type Payment activity.
+ */
 public class PaymentActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    /**
+     * The List.
+     */
     @BindView(R.id.list)
     RecyclerView list;
+    /**
+     * The No.
+     */
     @BindView(R.id.noContent)
     TextView no;
+    /**
+     * The Button.
+     */
     @BindView(R.id.add)
     FloatingActionButton button;
+    /**
+     * The Refresh layout.
+     */
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
     private SuperRecyclerAdapter<Payment> superRecyclerAdapter;
     private ArrayList<Payment> payments = new ArrayList<>();
     private Customer customer;
     private Disposable disposable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

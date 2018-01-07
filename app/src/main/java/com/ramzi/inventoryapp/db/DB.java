@@ -6,10 +6,19 @@ import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+/**
+ * The type Db.
+ */
 public class DB {
     private static Context c;
     private static DBHandler dbHandler;
 
+    /**
+     * Gets db.
+     *
+     * @param context the context
+     * @return the db
+     */
     public static DBHandler getDB(Context context) {
         c = context;
         if (dbHandler == null) {

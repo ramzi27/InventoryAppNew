@@ -14,6 +14,9 @@ import com.ramzi.inventoryapp.db.DBHandler;
 import com.ramzi.inventoryapp.entity.Customer;
 import com.ramzi.inventoryapp.util.Utils;
 
+/**
+ * The type Add customer activity.
+ */
 public class AddCustomerActivity extends AppCompatActivity {
 
     private CoordinatorLayout customerContainer;

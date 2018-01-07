@@ -47,15 +47,27 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * The type Customer fragment.
  */
-
 public class CustomerFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener, SwipeRefreshLayout.OnRefreshListener {
+    /**
+     * The List.
+     */
     @BindView(R.id.list)
     RecyclerView list;
+    /**
+     * The No.
+     */
     @BindView(R.id.noContent)
     TextView no;
+    /**
+     * The Button.
+     */
     @BindView(R.id.add)
     FloatingActionButton button;
+    /**
+     * The Refresh layout.
+     */
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
     private SuperRecyclerAdapter<Customer> superRecyclerAdapter;
